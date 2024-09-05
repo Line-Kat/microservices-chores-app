@@ -4,6 +4,8 @@ import com.chores.user.model.Parent;
 import com.chores.user.repository.ParentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ParentService {
 
@@ -13,8 +15,8 @@ public class ParentService {
         this.parentRepository = parentRepository;
     }
 
-    public Parent getParentById(Long id) {
-        return parentRepository.findById(id).orElse(null);
+    public Optional<Parent> getParentById(Long id) {
+        return parentRepository.findById(id);
     }
 
     public Parent createParent(Parent parent) {
