@@ -21,4 +21,6 @@ public class Child {
 
     @Column(name = "child_name")
     private String childName;
+
+    //foreign key to the parent the child belongs to
 }
