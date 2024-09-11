@@ -5,6 +5,7 @@ import com.chores.chores.model.Chore;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,7 +15,7 @@ public class ChildDTO {
     //holds what comes from the other service
     private Long childId;
     private String childName;
-    private List<Chore> listOfChores;
+    private List<Chore> listOfChores = new ArrayList<>();
 
     public Child convertToChild() {
         Child child = new Child();

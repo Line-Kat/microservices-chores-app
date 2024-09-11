@@ -17,8 +17,9 @@ public class ChoreController {
         return choreService.createChore(chore);
     }
 
+    // this should be a put!
     @PostMapping("/child")
-    public Child addChoreToChild(@RequestBody Chore chore) {
-        return choreService.addChoreToChild(chore);
+    public Child addChoreToChild(@RequestBody Chore chore, Child child) {
+        return choreService.addChoreToChild(chore, child);
     }
 }

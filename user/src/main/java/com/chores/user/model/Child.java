@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +23,9 @@ public class Child {
 
     @Column(name = "child_name")
     private String childName;
+
+    @Column(name = "list_of_chores")
+    private List<Chore> listOfChores;
 
     //foreign key to the parent the child belongs to
 }

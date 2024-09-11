@@ -6,5 +6,5 @@ import com.chores.chores.model.Chore;
 public interface ChoresService {
     Chore createChore(Chore chore);
 
-    Child addChoreToChild(Chore chore);
+    Child addChoreToChild(Chore chore, Child child);
 }

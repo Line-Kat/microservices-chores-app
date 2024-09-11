@@ -22,9 +22,9 @@ public class ChoresServiceImpl implements ChoresService {
     private final ChoresClient choresClient;
 
     @Override
-    public Child addChoreToChild(Chore chore) {
-        ChildDTO childDTO = choresClient.externalResolve(1L);
-        Child child = childDTO.convertToChild();
+    public Child addChoreToChild(Chore chore, Child child) {
+        ChildDTO childDTO = choresClient.externalResolve(child.childId);
+        child = childDTO.convertToChild();
         child.listOfChores.add(chore);
         return child;
     }
