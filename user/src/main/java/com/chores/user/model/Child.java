@@ -1,9 +1,6 @@
 package com.chores.user.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ public class Child {
     @Column(name = "child_name")
     private String childName;
 
+    @OneToMany
     private List<Chore> listOfChores;
 
     //foreign key to the parent the child belongs to
