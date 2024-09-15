@@ -15,9 +15,11 @@ import java.util.UUID;
 @ToString
 @Table(name = "child")
 
+@NamedQuery(name = "Child.findChildByUuid", query = "select c from Child c where c.childUuid = ?1")
+
 public class Child {
     @Id
-    @Generated
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "child_id")
     private Long childId;
 
@@ -32,6 +34,6 @@ public class Child {
     private Parent parent;
 
     @OneToMany
-    @JoinColumn(name = "childChoreId")
+    @JoinColumn(name = "child_chore_id")
     private List<ChildChore> listOfChores;
 }

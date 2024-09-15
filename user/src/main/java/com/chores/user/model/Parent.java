@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class Parent {
     @Id
-    @Generated
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "parent_id")
     private Long parentId;
 

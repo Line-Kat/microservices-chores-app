@@ -14,17 +14,6 @@ public class ParentService{
 
     private final ParentRepository parentRepository;
 
-    /*
-    public ParentService(ParentRepository parentRepository) {
-        this.parentRepository = parentRepository;
-    }
-
-    public Optional<Parent> getParentBy(Long id) {
-        return parentRepository.findById(id);
-    }
-
-    */
-
     public Optional<Parent> findParentByUuid(UUID uuid) {
         return parentRepository.findByParentUuid(uuid);
     }
@@ -32,6 +21,5 @@ public class ParentService{
     public Parent createParent(Parent parent) {
         return parentRepository.save(parent);
     }
-
 }
 

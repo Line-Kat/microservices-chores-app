@@ -4,12 +4,13 @@ import com.chores.user.DTO.ChildDTO;
 import com.chores.user.model.Child;
 import com.chores.user.model.ChildChore;
 import com.chores.user.service.ChildService;
-import com.chores.user.service.ParentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/child")
@@ -18,28 +19,44 @@ import org.springframework.web.bind.annotation.*;
 public class ChildController {
 
     private final ChildService childService;
-    //private final ParentService parentService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Child> getChildById(@PathVariable Long id) {
-        return childService.getChildById(id)
-                .map(child -> new ResponseEntity<>(child, HttpStatus.OK))
+    @GetMapping("/{uuid}")
+    public ResponseEntity<ChildDTO> findChildByUuid(@PathVariable UUID uuid) {
+        return childService.findChildByUuid(uuid)
+                .map(child -> new ResponseEntity<>(mapChildDTO(child), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
     @PostMapping
     public ResponseEntity<ChildDTO> createChild(@RequestBody ChildDTO childDTO) {
 
-        Child newChild = childService.createChild(mapChild(childDTO));
+        Child newChild = childService.createChild(mapChild(childDTO), childDTO.getParentId());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid(), null));
     }
 
     private Child mapChild(ChildDTO childDTO) {
         Child newChild = new Child();
+        ChildChore newChildChore = new ChildChore();
         newChild.setChildUuid(childDTO.getChildUuid());
         newChild.setChildName(childDTO.getChildName());
-        newChild.setListOfChores(childDTO.getListOfChores().stream().map(childChoreDTO -> new ChildChore(null, null, null)).toList());
+        newChild.setListOfChores(childDTO.getListOfChores().stream().map(childChoreDTO -> new ChildChore(newChildChore.getChildChoreId(), newChildChore.getChildChoreUuid(), newChildChore.getChild(), newChildChore.getChoreId())).toList());
+
         return newChild;
     }
+
+    private ChildDTO mapChildDTO(Child child) {
+        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), null);
+    }
+
+    /*
+    private ChildChore mapChore(ChildChoreDTO childChoreDTO) {
+        ChildChore newChildChore = new ChildChore();
+        newChildChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
+        newChildChore.setChild(childService.findChildByUuid(childChoreDTO.getChildChoreUuid()));
+        newChildChore.setChoreId(childChoreDTO.getChore().getChoreId());
+    }
+     */
 
 }
