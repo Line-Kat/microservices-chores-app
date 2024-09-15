@@ -14,6 +14,8 @@ import java.util.UUID;
 @Setter
 @ToString
 
+@NamedQuery(name = "Parent.findByParentUuid", query = "select p from Parent p where p.parentUuid = ?1")
+
 public class Parent {
     @Id
     @Generated

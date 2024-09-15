@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChildController {
 
     private final ChildService childService;
-    private final ParentService parentService;
+    //private final ParentService parentService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Child> getChildById(@PathVariable Long id) {
