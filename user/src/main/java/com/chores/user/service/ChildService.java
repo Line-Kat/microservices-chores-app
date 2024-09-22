@@ -23,4 +23,9 @@ public class ChildService {
         child.setParent(parentService.findParentByUuid(parentId).get());
         return childRepository.save(child);
     }
+
+    public Child updateChild(Child child) {
+        //hente
+        return childRepository.save(child);
+    }
 }
