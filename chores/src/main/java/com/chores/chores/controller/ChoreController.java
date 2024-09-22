@@ -31,12 +31,6 @@ public class ChoreController {
         return choreService.getChoreById(id)
                 .map(chore -> new ResponseEntity<>(mapChoreDTO(chore), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        /**
-         * return childService.findChildByUuid(uuid)
-         *                 .map(child -> new ResponseEntity<>(mapChildDTO(child), HttpStatus.OK))
-         *                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-         */
-
     }
 
     private ChoreDTO mapChoreDTO(Chore chore) {
@@ -45,12 +39,4 @@ public class ChoreController {
         choreDTO.setChoreName(chore.getChoreName());
         return choreDTO;
     }
-    /*
-    // this should be a put!
-    @PostMapping("/child")
-    public Child addChoreToChild(@RequestBody Chore chore, Child child) {
-        return choreService.addChoreToChild(chore, child);
-    }
-
-     */
 }

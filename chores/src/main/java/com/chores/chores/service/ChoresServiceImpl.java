@@ -31,17 +31,4 @@ public class ChoresServiceImpl implements ChoresService {
         return choresRepository.findById(id);
     }
 
-
-
-
-    /*
-    @Override
-    public Child addChoreToChild(Chore chore, Child child) {
-        ChildDTO childDTO = choresClient.externalResolve(child.childId);
-        child = childDTO.convertToChild();
-        child.listOfChores.add(chore);
-        return child;
-    }
-
-     */
 }

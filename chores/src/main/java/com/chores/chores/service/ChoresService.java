@@ -9,5 +9,4 @@ public interface ChoresService {
     Chore createChore(Chore chore);
     List<Chore> getChores();
     Optional<Chore> getChoreById(Long id);
-    //Child addChoreToChild(Chore chore, Child child);
 }

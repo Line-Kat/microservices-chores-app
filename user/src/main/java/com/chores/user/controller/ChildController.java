@@ -1,5 +1,6 @@
 package com.chores.user.controller;
 
+import com.chores.user.DTO.ChildChoreDTO;
 import com.chores.user.DTO.ChildDTO;
 import com.chores.user.model.Child;
 import com.chores.user.model.ChildChore;
@@ -36,6 +37,13 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid(), null));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ChildDTO> addChoreToChild(@PathVariable Long id, @RequestBody ChildDTO childDTO) {
+        Child newChild = childService.addChoreToChild(mapChild(childDTO), id);
+        return ResponseEntity.status(HttpStatus.OK).body(mapChildDTO(newChild));
+
+    }
+
     private Child mapChild(ChildDTO childDTO) {
         Child newChild = new Child();
         ChildChore newChildChore = new ChildChore();
@@ -47,16 +55,6 @@ public class ChildController {
     }
 
     private ChildDTO mapChildDTO(Child child) {
-        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), null);
+        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), child.getListOfChores().stream().map(childChore -> new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), null)).toList());
     }
-
-    /*
-    private ChildChore mapChore(ChildChoreDTO childChoreDTO) {
-        ChildChore newChildChore = new ChildChore();
-        newChildChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
-        newChildChore.setChild(childService.findChildByUuid(childChoreDTO.getChildChoreUuid()));
-        newChildChore.setChoreId(childChoreDTO.getChore().getChoreId());
-    }
-     */
-
 }

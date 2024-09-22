@@ -16,12 +16,4 @@ public class ChildDTO {
     private Long childId;
     private String childName;
     private List<Chore> listOfChores = new ArrayList<>();
-
-    public Child convertToChild() {
-        Child child = new Child();
-        child.setChildId(this.childId);
-        child.setChildName(this.childName);
-        child.setListOfChores(this.listOfChores);
-        return child;
-    }
 }
