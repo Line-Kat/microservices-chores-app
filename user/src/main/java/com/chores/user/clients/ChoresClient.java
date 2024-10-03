@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class UserClient {
+public class ChoresClient {
     // A service that calls another service (chores)
 
     // endpoint, where to call, where the service lives
@@ -21,7 +21,7 @@ public class UserClient {
     // remote call (build an HTTP and get a response back)
     private final RestTemplate restTemplate;
 
-    public UserClient(
+    public ChoresClient(
             RestTemplateBuilder restTemplateBuilder,
             @Value("http://localhost:8080") final String restServiceUrl) {
         this.restTemplate = restTemplateBuilder.build();

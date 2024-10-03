@@ -1,7 +1,8 @@
 package com.chores.user.service;
 
 import com.chores.user.DTO.ChoreDTO;
-import com.chores.user.clients.UserClient;
+import com.chores.user.clients.ChoresClient;
+import com.chores.user.eventdriven.RewardEventPublisher;
 import com.chores.user.model.Child;
 import com.chores.user.model.ChildChore;
 import com.chores.user.model.ChildChoreStatus;
@@ -22,8 +23,9 @@ public class ChildService {
 
     private final ChildRepository childRepository;
     private final ParentService parentService;
-    private final UserClient userClient;
+    private final ChoresClient userClient;
     private final ChildChoreRepository childChoreRepository;
+    private final RewardEventPublisher rewardEventPublisher;
 
     public Optional<Child> findChildByUuid(UUID childUuid) {
         return childRepository.findChildByUuid(childUuid);
@@ -52,4 +54,7 @@ public class ChildService {
 
         return childChoreRepository.save(childChore);
     }
+
+    // updateChildChore - changes the status of chore completed
+    // checks if all items in a list is completed for that day date.now == the date of todays list --> rewardEventPublisher.publishRewardEventString();
 }
