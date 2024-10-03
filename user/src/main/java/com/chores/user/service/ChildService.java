@@ -36,6 +36,13 @@ public class ChildService {
 
     public ChildChore addChoreToChild(UUID childUuid, UUID choreUuid,UUID childChoreUuid, Date date, ChildChoreStatus status) {
 
+        //validating that the chore exists
+        ChoreDTO choreDTO = userClient.externalResolve(choreUuid);
+        if(choreDTO == null) {
+            System.out.println("The chore doesn't exist");
+            return null;
+        }
+
         ChildChore childChore = new ChildChore();
         childChore.setChildChoreUuid(childChoreUuid);
         childChore.setChild(findChildByUuid(childUuid).get());
