@@ -8,7 +8,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ChoreDTO {
-    private Long choreId;
-    //private UUID choreUuid;
+    private UUID choreUuid;
     private String choreName;
 }

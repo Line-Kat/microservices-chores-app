@@ -4,6 +4,7 @@ import com.chores.user.DTO.ChoreDTO;
 import com.chores.user.clients.UserClient;
 import com.chores.user.model.Child;
 import com.chores.user.model.ChildChore;
+import com.chores.user.model.ChildChoreStatus;
 import com.chores.user.repository.ChildChoreRepository;
 import com.chores.user.repository.ChildRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,18 +34,15 @@ public class ChildService {
         return childRepository.save(child);
     }
 
-    public Child addChoreToChild(Child child, Long id) {
+    public ChildChore addChoreToChild(UUID childUuid, UUID choreUuid,UUID childChoreUuid, Date date, ChildChoreStatus status) {
+
         ChildChore childChore = new ChildChore();
-        ChoreDTO choreDTO = userClient.externalResolve(id);
-        Child newChild = childRepository.findChildByUuid(child.getChildUuid()).get();
+        childChore.setChildChoreUuid(childChoreUuid);
+        childChore.setChild(findChildByUuid(childUuid).get());
+        childChore.setChoreUuid(choreUuid);
+        childChore.setDate(date);
+        childChore.setStatus(status);
 
-        childChore.setChoreId(choreDTO.getChoreId());
-        childChore.setChildChoreUuid(UUID.randomUUID());
-        childChore.setChild(newChild);
-        childChore.setChoreId(choreDTO.getChoreId());
-
-        childChoreRepository.save(childChore);
-
-        return childRepository.findChildByUuid(child.getChildUuid()).orElseGet(null);
+        return childChoreRepository.save(childChore);
     }
 }

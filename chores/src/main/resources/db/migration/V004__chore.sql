@@ -1,4 +1,5 @@
 CREATE TABLE chore (
-    chore_id INTEGER PRIMARY KEY,
+    chore_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    chore_uuid VARCHAR NOT NULL,
     chore_name VARCHAR NOT NULL
 )

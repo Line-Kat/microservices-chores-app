@@ -37,24 +37,27 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid(), null));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ChildDTO> addChoreToChild(@PathVariable Long id, @RequestBody ChildDTO childDTO) {
-        Child newChild = childService.addChoreToChild(mapChild(childDTO), id);
-        return ResponseEntity.status(HttpStatus.OK).body(mapChildDTO(newChild));
-
-    }
-
     private Child mapChild(ChildDTO childDTO) {
         Child newChild = new Child();
-        ChildChore newChildChore = new ChildChore();
         newChild.setChildUuid(childDTO.getChildUuid());
         newChild.setChildName(childDTO.getChildName());
-        newChild.setListOfChores(childDTO.getListOfChores().stream().map(childChoreDTO -> new ChildChore(newChildChore.getChildChoreId(), newChildChore.getChildChoreUuid(), newChildChore.getChild(), newChildChore.getChoreId())).toList());
 
         return newChild;
     }
 
+    @PostMapping("/{childUuid}/chore")
+    public ResponseEntity<ChildChoreDTO> addChoreToChild(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
+        ChildChore tempChildChore = childService.addChoreToChild(childUuid, childChoreDTO.getChoreUuid(), childChoreDTO.getChildChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus());
+        ChildChoreDTO tempChildChoreDTO = mapChoreDTO(tempChildChore);
+
+        return ResponseEntity.status(HttpStatus.OK).body(tempChildChoreDTO);
+    }
+
     private ChildDTO mapChildDTO(Child child) {
-        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), child.getListOfChores().stream().map(childChore -> new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), null)).toList());
+        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), child.getListOfChores().stream().map(childChore -> new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus())).toList());
+    }
+
+    private ChildChoreDTO mapChoreDTO(ChildChore childChore) {
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
     }
 }

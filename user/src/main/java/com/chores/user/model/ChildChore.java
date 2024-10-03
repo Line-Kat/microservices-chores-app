@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -27,7 +28,13 @@ public class ChildChore {
     @JoinColumn(name = "child_id")
     private Child child;
 
-    @Column(name = "chore_id")
-    private Long choreId;
+    @Column(name = "chore_uuid")
+    private UUID choreUuid;
+
+    @Column(name = "child_chore_date")
+    private Date date;
+
+    @Column(name = "child_chore_status")
+    private ChildChoreStatus status;
 
 }
