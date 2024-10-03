@@ -3,14 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.chores</groupId>
-		<artifactId>app</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<artifactId>chores</artifactId>
+	<groupId>com.chores</groupId>
+	<artifactId>reward</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>chores</name>
-	<description>Chores application</description>
+	<name>reward</name>
+	<description>reward</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -25,8 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>20</java.version>
-		<maven.compiler.release>20</maven.compiler.release>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -57,13 +58,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.chores</groupId>
-            <artifactId>user</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
