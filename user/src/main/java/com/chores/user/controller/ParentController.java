@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/parent")
 @RequiredArgsConstructor
@@ -16,9 +18,9 @@ public class ParentController {
 
     private final ParentService parentService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Parent> getParentById(@PathVariable Long id) {
-        return parentService.getParentById(id)
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Parent> findParentByUuid(@PathVariable UUID uuid) {
+        return parentService.findParentByUuid(uuid)
                 .map(parent -> new ResponseEntity<>(parent, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

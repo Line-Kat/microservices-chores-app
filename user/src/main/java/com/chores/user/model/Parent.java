@@ -1,10 +1,10 @@
 package com.chores.user.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table (name = "parent")
@@ -12,13 +12,23 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
+
+@NamedQuery(name = "Parent.findByParentUuid", query = "select p from Parent p where p.parentUuid = ?1")
 
 public class Parent {
     @Id
-    @Generated
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "parent_id")
     private Long parentId;
 
+    @Column(name = "parent_uuid")
+    private UUID parentUuid;
+
     @Column(name = "parent_name")
     private String parentName;
+
+    @OneToMany
+    @JoinColumn(name = "child_id")
+    private List<Child> children;
 }
