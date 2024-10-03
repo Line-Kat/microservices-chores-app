@@ -25,12 +25,12 @@ public class ChildService {
     private final UserClient userClient;
     private final ChildChoreRepository childChoreRepository;
 
-    public Optional<Child> findChildByUuid(UUID uuid) {
-        return childRepository.findChildByUuid(uuid);
+    public Optional<Child> findChildByUuid(UUID childUuid) {
+        return childRepository.findChildByUuid(childUuid);
     }
 
-    public Child createChild(Child child, UUID parentId) {
-        child.setParent(parentService.findParentByUuid(parentId).get());
+    public Child createChild(Child child, UUID parentUuid) {
+        child.setParent(parentService.findParentByUuid(parentUuid).get());
         return childRepository.save(child);
     }
 
