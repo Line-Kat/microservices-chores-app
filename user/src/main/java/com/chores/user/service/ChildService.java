@@ -30,7 +30,11 @@ public class ChildService {
     private final RewardEventPublisher rewardEventPublisher;
 
     public Optional<Child> findChildByUuid(UUID childUuid) {
-        return childRepository.findChildByUuid(childUuid);
+
+        Optional<Child> childByUuid = childRepository.findChildByUuid(childUuid);
+        System.out.println(childByUuid.get().getListOfChores());
+        childChoreRepository.findAll().stream().forEach(System.out::println);
+        return childByUuid;
     }
 
     public Child createChild(Child child, UUID parentUuid) {
@@ -59,10 +63,13 @@ public class ChildService {
 
     // updateChildChore - changes the status of chore completed
     // checks if all items in a list is completed for that day date.now == the date of today's list --> rewardEventPublisher.publishRewardEventString();
-    private ChildChore updateChildChore(ChildChore childChore) {
-        childChore.setStatus(ChildChoreStatus.COMPLETED);
-        checkStatusOfListOfChores(childChore.getChild());
-        return childChoreRepository.save(childChore);
+    public ChildChore updateChildChore(ChildChore childChore) {
+        // get childchore from database, then change it
+        ChildChore tempChildChore = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
+        tempChildChore.setStatus(childChore.getStatus());
+
+        checkStatusOfListOfChores(tempChildChore.getChild());
+        return childChoreRepository.save(tempChildChore);
     }
 
     private void checkStatusOfListOfChores(Child child){
@@ -79,5 +86,4 @@ public class ChildService {
             }
         }
     }
-
 }
