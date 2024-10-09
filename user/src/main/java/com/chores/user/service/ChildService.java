@@ -2,6 +2,7 @@ package com.chores.user.service;
 
 import com.chores.user.DTO.ChoreDTO;
 import com.chores.user.clients.ChoresClient;
+import com.chores.user.eventdriven.RewardEvent;
 import com.chores.user.eventdriven.RewardEventPublisher;
 import com.chores.user.model.Child;
 import com.chores.user.model.ChildChore;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -56,5 +58,26 @@ public class ChildService {
     }
 
     // updateChildChore - changes the status of chore completed
-    // checks if all items in a list is completed for that day date.now == the date of todays list --> rewardEventPublisher.publishRewardEventString();
+    // checks if all items in a list is completed for that day date.now == the date of today's list --> rewardEventPublisher.publishRewardEventString();
+    private ChildChore updateChildChore(ChildChore childChore) {
+        childChore.setStatus(ChildChoreStatus.COMPLETED);
+        checkStatusOfListOfChores(childChore.getChild());
+        return childChoreRepository.save(childChore);
+    }
+
+    private void checkStatusOfListOfChores(Child child){
+        List<ChildChore> listOfChores = child.getListOfChores();
+
+        for (ChildChore listOfChore : listOfChores) {
+            if (listOfChore.getStatus() == ChildChoreStatus.COMPLETED) {
+                List<UUID> listOfChoreUuids = listOfChores.stream()
+                        .map(ChildChore::getChoreUuid).toList();
+
+                RewardEvent rewardEvent = new RewardEvent(child.getChildUuid(), listOfChoreUuids);
+                rewardEventPublisher.publishRewardEvent(rewardEvent);
+                return;
+            }
+        }
+    }
+
 }
