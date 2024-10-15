@@ -80,7 +80,8 @@ public class ChildService {
                 List<UUID> listOfChoreUuids = listOfChores.stream()
                         .map(ChildChore::getChoreUuid).toList();
 
-                RewardEvent rewardEvent = new RewardEvent(child.getChildUuid(), listOfChoreUuids);
+                // RewardEvent rewardEvent = new RewardEvent(child.getChildUuid(), listOfChoreUuids);
+                // what should I send as parameters in the method below? childUuid and choreUuid?
                 rewardEventPublisher.publishRewardEvent(rewardEvent);
                 return;
             }

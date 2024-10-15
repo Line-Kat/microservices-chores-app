@@ -18,7 +18,13 @@ public class RewardEventPublisher {
         this.exchangeName = exchangeName;
     }
 
+    // method will send a json
     public void publishRewardEvent(RewardEvent rewardEvent) {
+        // build the message/event (choreUuid? childUuid?)
+
+        // decide on routing
+
+        // send the thing
         amqpTemplate.convertAndSend(rewardEvent);
     }
 }
