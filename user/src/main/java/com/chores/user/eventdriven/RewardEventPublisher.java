@@ -31,6 +31,6 @@ public class RewardEventPublisher {
         String routingKey = "chore.completed";
 
         // send the thing
-        amqpTemplate.convertAndSend(exchangeName, routingKey, "test");
+        amqpTemplate.convertAndSend(exchangeName, routingKey, "test tekst for å sjekke");
     }
 }
