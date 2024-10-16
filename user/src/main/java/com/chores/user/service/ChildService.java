@@ -82,7 +82,7 @@ public class ChildService {
 
                 // RewardEvent rewardEvent = new RewardEvent(child.getChildUuid(), listOfChoreUuids);
                 // what should I send as parameters in the method below? childUuid and choreUuid?
-                rewardEventPublisher.publishRewardEvent(rewardEvent);
+                rewardEventPublisher.publishRewardEvent(listOfChoreUuids, child);
                 return;
             }
         }

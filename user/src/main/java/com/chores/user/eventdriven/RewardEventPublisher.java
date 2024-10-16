@@ -1,8 +1,12 @@
 package com.chores.user.eventdriven;
 
+import com.chores.user.model.Child;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RewardEventPublisher {
@@ -19,12 +23,14 @@ public class RewardEventPublisher {
     }
 
     // method will send a json
-    public void publishRewardEvent(RewardEvent rewardEvent) {
+    public void publishRewardEvent(List<UUID> choreUuid, Child child) {
         // build the message/event (choreUuid? childUuid?)
+        RewardEvent event = new RewardEvent(child.getChildUuid(), choreUuid);
 
         // decide on routing
+        String routingKey = "chore.completed";
 
         // send the thing
-        amqpTemplate.convertAndSend(rewardEvent);
+        amqpTemplate.convertAndSend(exchangeName, routingKey, "test");
     }
 }
