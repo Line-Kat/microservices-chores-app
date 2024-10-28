@@ -15,6 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "child_chore")
+
+@NamedQuery(name = "ChildChore.findChildChoreByUuid", query = "select c from ChildChore c where c.childChoreUuid = ?1")
 public class ChildChore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -37,14 +37,6 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid(), null));
     }
 
-    private Child mapChild(ChildDTO childDTO) {
-        Child newChild = new Child();
-        newChild.setChildUuid(childDTO.getChildUuid());
-        newChild.setChildName(childDTO.getChildName());
-
-        return newChild;
-    }
-
     @PostMapping("/{childUuid}/chore")
     public ResponseEntity<ChildChoreDTO> addChoreToChild(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
         ChildChore tempChildChore = childService.addChoreToChild(childUuid, childChoreDTO.getChoreUuid(), childChoreDTO.getChildChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus());
@@ -53,11 +45,48 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.OK).body(tempChildChoreDTO);
     }
 
+    @PutMapping("/{childUuid}")
+    public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
+        ChildChore tempChildChore = childService.updateChildChore(mapChildChore(childChoreDTO, childUuid));
+
+        ChildChoreDTO newChildChoreDTO = mapChildChoreDTO(tempChildChore);
+
+        return ResponseEntity.status(HttpStatus.OK).body(newChildChoreDTO);
+    }
+
+    private ChildChore mapChildChore(ChildChoreDTO childChoreDTO, UUID childUuid) {
+
+        ChildChore childChore = new ChildChore();
+        Child child = mapChild(findChildByUuid(childUuid).getBody());
+
+        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
+        childChore.setChild(child);
+        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
+        childChore.setDate(childChoreDTO.getDate());
+        childChore.setStatus(childChoreDTO.getStatus());
+
+        return childChore;
+
+        //return new ChildChore(childChoreDTO.getChildChoreUuid(), child, childChoreDTO.getChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus());
+    }
+
+    private ChildChoreDTO mapChildChoreDTO(ChildChore childChore) {
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
+    }
+
     private ChildDTO mapChildDTO(Child child) {
         return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), child.getListOfChores().stream().map(childChore -> new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus())).toList());
     }
 
     private ChildChoreDTO mapChoreDTO(ChildChore childChore) {
         return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
+    }
+
+    private Child mapChild(ChildDTO childDTO) {
+        Child newChild = new Child();
+        newChild.setChildUuid(childDTO.getChildUuid());
+        newChild.setChildName(childDTO.getChildName());
+
+        return newChild;
     }
 }

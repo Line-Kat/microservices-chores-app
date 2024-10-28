@@ -14,8 +14,8 @@ public class ParentService{
 
     private final ParentRepository parentRepository;
 
-    public Optional<Parent> findParentByUuid(UUID uuid) {
-        return parentRepository.findByParentUuid(uuid);
+    public Optional<Parent> findParentByUuid(UUID parentUuid) {
+        return parentRepository.findByParentUuid(parentUuid);
     }
 
     public Parent createParent(Parent parent) {
