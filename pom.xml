@@ -19,5 +19,6 @@
         <module>user</module>
         <module>chores</module>
         <module>reward</module>
+        <module>Gateway</module>
     </modules>
 </project>
