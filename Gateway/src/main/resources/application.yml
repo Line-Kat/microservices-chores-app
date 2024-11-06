@@ -12,16 +12,18 @@ spring:
         - id: user
           uri: lb://user
           predicates:
-            - Path=/child, /child/**
+            - Path=/child, /child/**, /parent, /parent/**
         - id: chores
           uri: lb://chores
           predicates:
             - Path=/chore, /chore/**
+
+      # If i implement frontend I need the code below
       globalcors:
         cors-configurations:
           '[/**]':
             allowed-origins:
-              - "http://localhost:3000" # frontend
+              - '*' #"http://localhost:3000" # frontend
             allowed-headers:
               - "*"
             allowed-methods:
