@@ -1,7 +1,6 @@
 package com.chores.chores.repository;
 
 import com.chores.chores.model.Chore;
-import com.chores.user.model.Child;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
