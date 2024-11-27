@@ -23,7 +23,7 @@ public class ChoresClient {
 
     public ChoresClient(
             RestTemplateBuilder restTemplateBuilder,
-            @Value("http://localhost:8080") final String restServiceUrl) {
+            @Value("${round.client.host}") final String restServiceUrl) {
         this.restTemplate = restTemplateBuilder.build();
         this.restServiceUrl = restServiceUrl;
     }
