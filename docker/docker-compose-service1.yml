@@ -1,0 +1,62 @@
+# Adds Gateway
+
+version: "3.8"
+
+services:
+  user:
+    image: user:0.0.1
+    container_name: user
+    ports:
+      - '8081:8081'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - micro_chores
+
+  gateway:
+    image: gateway:0.0.1
+    container_name: gateway
+    ports:
+      - '8000:8000'
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker # which Consul profile it gets its configuration information
+      - SPRING_CLOUD_CONSUL_HOST=consul # default value is local host
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - micro_chores
+
+
+  rabbitmq-dev:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - micro_chores
+
+  consul-dev:
+    image: consul:1.15.0
+    container_name: consul
+    ports:
+      - '8500:8500'
+    command: 'agent -dev -node=chores -client=0.0.0.0 -log-level=INFO'
+    networks:
+      - micro_chores
+
+  consul-importer:
+    image: consul-importer:1.15.0
+    depends_on:
+      - consul-dev
+    networks:
+      - micro_chores
+
+networks:
+  micro_chores:
+    driver: bridge
