@@ -35,3 +35,6 @@ A list of tags for the different services
 - gateway: gateway:0.0.1
 - rabbitmq: rabbitmq:3.13-management
 - consul: consul:1.15.0
+
+After I have ran docker-compose down, I need to create the network "docker_micro_chores" before
+running docker-compose up (docker network create docker_micro_chores)

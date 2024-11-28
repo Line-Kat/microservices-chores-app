@@ -1,19 +1,16 @@
-# Adds Gateway
-
 version: "3.8"
 
 services:
   user:
     image: user:0.0.1
-    container_name: user
     ports:
-      - '8081:8081'
+      - '8081' # port inside the container
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
-      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/user;AUTO_SERVER=TRUE;
-    volumes:
-      - ./data:/data
+      # - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/user;AUTO_SERVER=TRUE;
+    #volumes:
+    #  - ./data:/data
     depends_on:
       - rabbitmq-dev
       - consul-importer
