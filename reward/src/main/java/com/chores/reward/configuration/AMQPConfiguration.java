@@ -33,7 +33,7 @@ public class AMQPConfiguration {
     ) {
         return BindingBuilder.bind(queue)
                 .to(exchange)
-                .with("chore.completed");
+                .with("chore.completed"); // RoutingKey
     }
 
     //queues - where the messages are read from

@@ -27,3 +27,14 @@ To run several instances of a service (because of a bug in IntelliJ)
 - choose modify options: add VM options: -Dserver.port=<port number>
 
 When using Postman for testing, remember to check which port the Gateway is running on
+
+I have used docker build to create the images (NB! Double check before delivery!)
+A list of tags for the different services
+- user: user:0.0.1
+- consul-importer: consul-importer:1.15.0
+- gateway: gateway:0.0.1
+- rabbitmq: rabbitmq:3.13-management
+- consul: consul:1.15.0
+
+After I have ran docker-compose down, I need to create the network "docker_micro_chores" before
+running docker-compose up (docker network create docker_micro_chores)
