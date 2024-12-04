@@ -1,13 +1,12 @@
-package com.chores.user.eventdriven;
+package com.chores.childchore.eventdriven;
 
-import com.chores.user.model.Child;
+import com.chores.childchore.model.ChildChore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -25,21 +24,18 @@ public class RewardEventPublisher {
     }
 
     // method will send a json
-    public void publishRewardEvent(List<UUID> choreUuid, Child child) {
+    public void publishRewardEvent(List<ChildChore> listOfCompletedChores) {
         // build the message/event (choreUuid? childUuid?)
-        RewardEvent event = buildEvent(choreUuid, child);
+        RewardEvent event = buildEvent(listOfCompletedChores);
 
         // decide on routing
         String routingKey = "chore.completed";
 
         // send the thing
-        log.info("Publishing reward event/rabbit message: " + event);
         amqpTemplate.convertAndSend(exchangeName, routingKey, event);
     }
 
-    private RewardEvent buildEvent(List<UUID> choreUuid, Child child) {
-        return new RewardEvent(
-                child.getChildUuid(),
-                choreUuid);
+    private RewardEvent buildEvent(List<ChildChore> listOfCompletedChores) {
+        return new RewardEvent(listOfCompletedChores);
     }
 }

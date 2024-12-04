@@ -21,7 +21,7 @@ public class ParentController {
     @GetMapping("/{uuid}")
     public ResponseEntity<Parent> findParentByUuid(@PathVariable UUID uuid) {
         return parentService.findParentByUuid(uuid)
-                .map(parent -> new ResponseEntity<>(parent, HttpStatus.OK))
+                .map(parent -> new ResponseEntity<>(parent, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

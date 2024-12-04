@@ -1,4 +1,4 @@
-package com.chores.user.model;
+package com.chores.childchore.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,9 +26,8 @@ public class ChildChore {
     @Column(name = "child_chore_uuid")
     private UUID childChoreUuid;
 
-    @ManyToOne
-    @JoinColumn(name = "child_id")
-    private Child child;
+    @JoinColumn(name = "child_uuid")
+    private UUID childUuid;
 
     @Column(name = "chore_uuid")
     private UUID choreUuid;

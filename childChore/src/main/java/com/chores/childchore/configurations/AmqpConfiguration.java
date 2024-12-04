@@ -1,4 +1,4 @@
-package com.chores.user.configurations;
+package com.chores.childchore.configurations;
 
 import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.TopicExchange;

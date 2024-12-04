@@ -17,8 +17,12 @@ spring:
           uri: lb://chores
           predicates:
             - Path=/chore, /chore/**
+        - id: childChore
+          uri: lb://childChore
+          predicates:
+            - Path=/childchore, /childchore/**
 
-      # If i implement frontend I need the code below
+      # If I implement frontend I need the code below
       globalcors:
         cors-configurations:
           '[/**]':

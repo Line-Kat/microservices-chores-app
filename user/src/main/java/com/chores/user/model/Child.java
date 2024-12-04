@@ -3,7 +3,6 @@ package com.chores.user.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,8 +30,4 @@ public class Child {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Parent parent;
-
-    @OneToMany
-    @JoinColumn(name = "child_chore_id")
-    private List<ChildChore> listOfChores;
 }

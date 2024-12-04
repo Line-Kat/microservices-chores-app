@@ -1,6 +1,6 @@
-package com.chores.user.DTO;
+package com.chores.childchore.DTO;
 
-import com.chores.user.model.ChildChoreStatus;
+import com.chores.childchore.model.ChildChoreStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

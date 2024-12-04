@@ -1,4 +1,4 @@
-package com.chores.user.model;
+package com.chores.childchore.model;
 
 public enum ChildChoreStatus {
     NEW,

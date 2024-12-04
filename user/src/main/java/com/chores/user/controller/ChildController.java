@@ -1,9 +1,7 @@
 package com.chores.user.controller;
 
-import com.chores.user.DTO.ChildChoreDTO;
 import com.chores.user.DTO.ChildDTO;
 import com.chores.user.model.Child;
-import com.chores.user.model.ChildChore;
 import com.chores.user.service.ChildService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +14,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/child")
 @RequiredArgsConstructor
-@Slf4j
 public class ChildController {
 
     private final ChildService childService;
@@ -26,7 +23,6 @@ public class ChildController {
         return childService.findChildByUuid(uuid)
                 .map(child -> new ResponseEntity<>(mapChildDTO(child), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
     }
 
     @PostMapping
@@ -34,52 +30,11 @@ public class ChildController {
 
         Child newChild = childService.createChild(mapChild(childDTO), childDTO.getParentId());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid(), null));
-    }
-
-    @PostMapping("/{childUuid}/chore")
-    public ResponseEntity<ChildChoreDTO> addChoreToChild(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
-        ChildChore tempChildChore = childService.addChoreToChild(childUuid, childChoreDTO.getChoreUuid(), childChoreDTO.getChildChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus());
-        ChildChoreDTO tempChildChoreDTO = mapChoreDTO(tempChildChore);
-
-        return ResponseEntity.status(HttpStatus.OK).body(tempChildChoreDTO);
-    }
-
-    @PutMapping("/{childUuid}")
-    public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
-        ChildChore tempChildChore = childService.updateChildChore(mapChildChore(childChoreDTO, childUuid));
-
-        ChildChoreDTO newChildChoreDTO = mapChildChoreDTO(tempChildChore);
-
-        return ResponseEntity.status(HttpStatus.OK).body(newChildChoreDTO);
-    }
-
-    private ChildChore mapChildChore(ChildChoreDTO childChoreDTO, UUID childUuid) {
-
-        ChildChore childChore = new ChildChore();
-        Child child = mapChild(findChildByUuid(childUuid).getBody());
-
-        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
-        childChore.setChild(child);
-        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
-        childChore.setDate(childChoreDTO.getDate());
-        childChore.setStatus(childChoreDTO.getStatus());
-
-        return childChore;
-
-        //return new ChildChore(childChoreDTO.getChildChoreUuid(), child, childChoreDTO.getChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus());
-    }
-
-    private ChildChoreDTO mapChildChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid()));
     }
 
     private ChildDTO mapChildDTO(Child child) {
-        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid(), child.getListOfChores().stream().map(childChore -> new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus())).toList());
-    }
-
-    private ChildChoreDTO mapChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChild().getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
+        return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid());
     }
 
     private Child mapChild(ChildDTO childDTO) {

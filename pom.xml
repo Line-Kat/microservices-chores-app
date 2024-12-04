@@ -20,5 +20,6 @@
         <module>chores</module>
         <module>reward</module>
         <module>Gateway</module>
+        <module>childChore</module>
     </modules>
 </project>
