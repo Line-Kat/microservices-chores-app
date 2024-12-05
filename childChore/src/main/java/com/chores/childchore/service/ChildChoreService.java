@@ -20,7 +20,7 @@ public class ChildChoreService {
     private final RewardEventPublisher rewardEventPublisher;
     private final ChildChoreRepository childChoreRepository;
 
-    public ChildChore addChoreToChild(UUID childUuid, UUID choreUuid, UUID childChoreUuid, Date date, ChildChoreStatus status) {
+    public ChildChore addChoreToChild(UUID childUuid, UUID choreUuid, UUID childChoreUuid, Date date, ChildChoreStatus status, int value) {
 
         ChildChore childChore = new ChildChore();
         childChore.setChildChoreUuid(childChoreUuid);
@@ -28,6 +28,7 @@ public class ChildChoreService {
         childChore.setChoreUuid(choreUuid);
         childChore.setDate(date);
         childChore.setStatus(status);
+        childChore.setValue(value);
 
         return childChoreRepository.save(childChore);
     }
@@ -36,7 +37,6 @@ public class ChildChoreService {
     // checks if all items in a list are completed for that day date.now == the date of today's list --> rewardEventPublisher.publishRewardEventString();
     public ChildChore updateChildChore(ChildChore childChore) {
         // get childchore from database, then change it
-        // create a function to find all the chores to a child
         ChildChore tempChildChore = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
         tempChildChore.setStatus(childChore.getStatus());
 
@@ -46,21 +46,16 @@ public class ChildChoreService {
 
     private void checkStatusOfListOfChores(UUID childUuid) {
         List<ChildChore> listOfChores = childChoreRepository.findAllByChildUuid(childUuid);
-        List<ChildChore> listSendToRabbitMQ = new ArrayList<>();
+        List<Integer> listSendToRabbitMQ = new ArrayList<>();
 
         for (ChildChore chore : listOfChores) {
             if (chore.getStatus() == ChildChoreStatus.COMPLETED) {
-                listSendToRabbitMQ.add(chore);
-
-
-                if(listOfChores.size() == listSendToRabbitMQ.size()) {
-                    rewardEventPublisher.publishRewardEvent(listSendToRabbitMQ);
-                }
-
-
-
-                return;
+                listSendToRabbitMQ.add(chore.getValue());
             }
+        }
+
+        if(listOfChores.size() == listSendToRabbitMQ.size()) {
+            rewardEventPublisher.publishRewardEvent(childUuid, listSendToRabbitMQ);
         }
     }
 }

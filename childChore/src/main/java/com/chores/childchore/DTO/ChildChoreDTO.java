@@ -19,4 +19,5 @@ public class ChildChoreDTO {
     private UUID choreUuid;
     private Date date;
     private ChildChoreStatus status;
+    private int value;
 }

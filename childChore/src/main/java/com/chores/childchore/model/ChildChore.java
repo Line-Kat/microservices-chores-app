@@ -38,4 +38,6 @@ public class ChildChore {
     @Column(name = "child_chore_status")
     private ChildChoreStatus status;
 
+    @Column(name = "child_chore_value")
+    private int value;
 }

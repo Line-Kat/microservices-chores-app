@@ -26,6 +26,9 @@ public class ChildService {
 
     public Child createChild(Child child, UUID parentUuid) {
         child.setParent(parentService.findParentByUuid(parentUuid).get());
+
+        // call Reward service to create a balance
+
         return childRepository.save(child);
     }
 }

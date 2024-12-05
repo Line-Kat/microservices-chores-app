@@ -1,12 +1,12 @@
 package com.chores.childchore.eventdriven;
 
-import com.chores.childchore.model.ChildChore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -24,9 +24,9 @@ public class RewardEventPublisher {
     }
 
     // method will send a json
-    public void publishRewardEvent(List<ChildChore> listOfCompletedChores) {
+    public void publishRewardEvent(UUID childUuid, List<Integer> childChoreValues) {
         // build the message/event (choreUuid? childUuid?)
-        RewardEvent event = buildEvent(listOfCompletedChores);
+        RewardEvent event = buildEvent(childUuid, childChoreValues);
 
         // decide on routing
         String routingKey = "chore.completed";
@@ -35,7 +35,7 @@ public class RewardEventPublisher {
         amqpTemplate.convertAndSend(exchangeName, routingKey, event);
     }
 
-    private RewardEvent buildEvent(List<ChildChore> listOfCompletedChores) {
-        return new RewardEvent(listOfCompletedChores);
+    private RewardEvent buildEvent(UUID childUuid, List<Integer> childChoreValues) {
+        return new RewardEvent(childUuid, childChoreValues);
     }
 }

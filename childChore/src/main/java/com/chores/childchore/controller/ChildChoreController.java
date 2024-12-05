@@ -4,14 +4,12 @@ import com.chores.childchore.DTO.ChildChoreDTO;
 import com.chores.childchore.model.ChildChore;
 import com.chores.childchore.service.ChildChoreService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequestMapping("/childchore")
 @RequiredArgsConstructor
@@ -22,7 +20,7 @@ public class ChildChoreController {
     @PostMapping("/addchore")
     public ResponseEntity<ChildChoreDTO> addChoreToChild(@RequestBody ChildChoreDTO childChoreDTO) {
 
-        ChildChore tempChildChore = childChoreService.addChoreToChild(childChoreDTO.getChildUuid(), childChoreDTO.getChoreUuid(), childChoreDTO.getChildChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus());
+        ChildChore tempChildChore = childChoreService.addChoreToChild(childChoreDTO.getChildUuid(), childChoreDTO.getChoreUuid(), childChoreDTO.getChildChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus(), childChoreDTO.getValue());
         ChildChoreDTO tempChildChoreDTO = mapChoreDTO(tempChildChore);
 
         return ResponseEntity.status(HttpStatus.OK).body(tempChildChoreDTO);
@@ -52,10 +50,10 @@ public class ChildChoreController {
     }
 
     private ChildChoreDTO mapChildChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
     }
 
     private ChildChoreDTO mapChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus());
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
     }
 }

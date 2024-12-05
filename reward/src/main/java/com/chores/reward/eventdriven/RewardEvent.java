@@ -8,5 +8,5 @@ import java.util.UUID;
 @Value
 public class RewardEvent {
     UUID childUuid;
-    List<UUID> choreUuids;
+    List<Integer> childChoreValues;
 }

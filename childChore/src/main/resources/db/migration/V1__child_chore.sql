@@ -4,5 +4,6 @@ CREATE TABLE child_chore (
     child_uuid INTEGER NOT NULL,
     chore_uuid VARCHAR NOT NULL,
     child_chore_date DATE NOT NULL,
-    child_chore_status VARCHAR NOT NULL
+    child_chore_status VARCHAR NOT NULL,
+    child_chore_value INT NOT NULL
 )
