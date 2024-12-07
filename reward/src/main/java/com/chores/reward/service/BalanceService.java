@@ -40,7 +40,9 @@ public class BalanceService {
     }
 
     public Balance parentUpdateBalance(Balance balance) {
-        Balance tempBalance = balanceRepository.findBalanceByChildUuid(balance.getChildUuid()).orElseThrow();
+        Balance tempBalance = balanceRepository.findBalanceByChildUuid(balance.getChildUuid())
+                .orElseGet(() -> {balance.setBalanceUuid(UUID.randomUUID());
+                return balance;});
         tempBalance.setBalanceValue(balance.getBalanceValue());
         return balanceRepository.save(tempBalance);
     }

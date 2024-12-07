@@ -19,7 +19,7 @@
         <module>user</module>
         <module>chores</module>
         <module>reward</module>
-        <module>Gateway</module>
+        <module>gateway</module>
         <module>childChore</module>
     </modules>
 </project>
