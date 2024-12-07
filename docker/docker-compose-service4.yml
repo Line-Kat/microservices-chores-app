@@ -8,11 +8,13 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
+      - ROUND_CLIENT_HOST=http://reward:8084
       # - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/user;AUTO_SERVER=TRUE;
     #volumes:
     #  - ./data:/data
     depends_on:
       - consul-importer
+      - reward
     networks:
       - micro_chores
 

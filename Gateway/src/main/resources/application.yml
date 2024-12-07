@@ -22,6 +22,7 @@ spring:
           predicates:
             - Path=/childchore, /childchore/**
 
+
       # If I implement frontend I need the code below
       globalcors:
         cors-configurations:
@@ -34,6 +35,7 @@ spring:
               - "GET"
               - "POST"
               - "OPTIONS"
+              - "DELETE"
       default-filters:
         - name: Retry
           args:

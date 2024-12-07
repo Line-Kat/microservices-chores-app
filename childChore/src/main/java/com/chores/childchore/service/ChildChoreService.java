@@ -8,10 +8,7 @@ import lombok.ToString;
 import org.springframework.stereotype.Service;
 import com.chores.childchore.repository.ChildChoreRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +28,15 @@ public class ChildChoreService {
         childChore.setValue(value);
 
         return childChoreRepository.save(childChore);
+    }
+
+    public List<ChildChore> getAllChores(UUID childUuid) {
+        return childChoreRepository.findAllByChildUuid(childUuid);
+    }
+
+    public void deleteChildChore(ChildChore childChore) {
+        ChildChore cc = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
+        childChoreRepository.deleteById(cc.getChildChoreId());
     }
 
     // updateChildChore - changes the status of chore completed

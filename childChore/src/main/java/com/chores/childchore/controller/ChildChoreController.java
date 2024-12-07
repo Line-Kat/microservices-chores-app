@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +37,39 @@ public class ChildChoreController {
         return ResponseEntity.status(HttpStatus.OK).body(newChildChoreDTO);
     }
 
+    @GetMapping("/{childUuid}")
+    public ResponseEntity<List<ChildChoreDTO>> getAllChoresByChildUuid(@PathVariable UUID childUuid) {
+        List<ChildChoreDTO> listOfChildChoreDTO = mapListOfChildChoreDTO(childChoreService.getAllChores(childUuid));
+        return ResponseEntity.status(HttpStatus.OK).body(listOfChildChoreDTO);
+    }
+
+    @DeleteMapping("/remove")
+    public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
+        childChoreService.deleteChildChore(mapChore(childChoreDTO));
+    }
+
     // Mapping
+    private List<ChildChoreDTO> mapListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
+        List<ChildChoreDTO> listOfChildChoreDTO = new ArrayList<>();
+        for(ChildChore cc : listOfChildChore) {
+            listOfChildChoreDTO.add(mapChoreDTO(cc));
+        }
+
+        return listOfChildChoreDTO;
+    }
+
+    private ChildChore mapChore(ChildChoreDTO childChoreDTO) {
+        ChildChore childChore = new ChildChore();
+        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
+        childChore.setChildUuid(childChore.getChildUuid());
+        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
+        childChore.setDate(childChoreDTO.getDate());
+        childChore.setStatus(childChoreDTO.getStatus());
+
+        return childChore;
+    }
+
+    // Refactor
     private ChildChore mapChildChore(ChildChoreDTO childChoreDTO, UUID childUuid) {
 
         ChildChore childChore = new ChildChore();
