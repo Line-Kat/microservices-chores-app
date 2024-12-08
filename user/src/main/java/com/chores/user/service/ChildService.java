@@ -1,23 +1,19 @@
 package com.chores.user.service;
 
-import com.chores.user.DTO.ChoreDTO;
-import com.chores.user.clients.ChoresClient;
-import com.chores.user.eventdriven.RewardEvent;
-import com.chores.user.eventdriven.RewardEventPublisher;
+import com.chores.user.DTO.BalanceDTO;
+import com.chores.user.DTO.SavingGoalDTO;
+import com.chores.user.clients.RewardClient;
 import com.chores.user.model.Child;
-import com.chores.user.model.ChildChore;
-import com.chores.user.model.ChildChoreStatus;
-import com.chores.user.repository.ChildChoreRepository;
+import com.chores.user.model.Parent;
 import com.chores.user.repository.ChildRepository;
+import com.chores.user.repository.ParentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @ToString
@@ -25,64 +21,43 @@ public class ChildService {
 
     private final ChildRepository childRepository;
     private final ParentService parentService;
-    private final ChoresClient userClient;
-    private final ChildChoreRepository childChoreRepository;
-    private final RewardEventPublisher rewardEventPublisher;
+    private final RewardClient rewardClient;
+    private final ParentRepository parentRepository;
 
     public Optional<Child> findChildByUuid(UUID childUuid) {
 
-        Optional<Child> childByUuid = childRepository.findChildByUuid(childUuid);
-        System.out.println(childByUuid.get().getListOfChores());
-        childChoreRepository.findAll().stream().forEach(System.out::println);
-        return childByUuid;
+        return childRepository.findChildByUuid(childUuid);
     }
 
     public Child createChild(Child child, UUID parentUuid) {
-        child.setParent(parentService.findParentByUuid(parentUuid).get());
+        return childRepository.findChildByUuid(child.getChildUuid())
+                .orElseGet(() -> doCreateChild(child, parentUuid));
+    }
+
+    private Child doCreateChild(Child child, UUID parentUuid) {
+        Parent parent = parentService.findParentByUuid(parentUuid).orElseThrow();
+        child.setParent(parent);
+        parent.getChildren().add(child);
+
+        rewardClient.createBalance(child.getChildUuid());
         return childRepository.save(child);
     }
 
-    public ChildChore addChoreToChild(UUID childUuid, UUID choreUuid,UUID childChoreUuid, Date date, ChildChoreStatus status) {
-
-        //validating that the chore exists
-        ChoreDTO choreDTO = userClient.externalResolve(choreUuid);
-        if(choreDTO == null) {
-            System.out.println("The chore doesn't exist");
-            return null;
-        }
-
-        ChildChore childChore = new ChildChore();
-        childChore.setChildChoreUuid(childChoreUuid);
-        childChore.setChild(findChildByUuid(childUuid).get());
-        childChore.setChoreUuid(choreUuid);
-        childChore.setDate(date);
-        childChore.setStatus(status);
-
-        return childChoreRepository.save(childChore);
+    public Optional<BalanceDTO> getBalance(UUID childUuid) {
+        return rewardClient.getBalance(childUuid);
     }
 
-    // updateChildChore - changes the status of chore completed
-    // checks if all items in a list is completed for that day date.now == the date of today's list --> rewardEventPublisher.publishRewardEventString();
-    public ChildChore updateChildChore(ChildChore childChore) {
-        // get childchore from database, then change it
-        ChildChore tempChildChore = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
-        tempChildChore.setStatus(childChore.getStatus());
-
-        checkStatusOfListOfChores(tempChildChore.getChild());
-        return childChoreRepository.save(tempChildChore);
+    public Optional<SavingGoalDTO> getSavingGoal(UUID childUuid) {
+        return rewardClient.getSavingGoal(childUuid);
     }
 
-    private void checkStatusOfListOfChores(Child child){
-        List<ChildChore> listOfChores = child.getListOfChores();
-
-        for (ChildChore listOfChore : listOfChores) {
-            if (listOfChore.getStatus() == ChildChoreStatus.COMPLETED) {
-                List<UUID> listOfChoreUuids = listOfChores.stream()
-                        .map(ChildChore::getChoreUuid).toList();
-
-                rewardEventPublisher.publishRewardEvent(listOfChoreUuids, child);
-                return;
-            }
-        }
+    public SavingGoalDTO createSavingGoal(SavingGoalDTO savingGoalDTO) {
+        return rewardClient.createSavingGoal(savingGoalDTO);
     }
+
+    public BalanceDTO parentUpdateBalance(UUID childUuid, BalanceDTO balanceDTO) {
+        return rewardClient.parentUpdateBalance(childUuid, balanceDTO);
+    }
+
+
 }

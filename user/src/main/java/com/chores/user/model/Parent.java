@@ -29,6 +29,5 @@ public class Parent {
     private String parentName;
 
     @OneToMany
-    @JoinColumn(name = "child_id")
     private List<Child> children;
 }
