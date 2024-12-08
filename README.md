@@ -1,6 +1,9 @@
 ## Instructions on how to build and run the application
 ### Build
+First package the services using Maven </br>
+Run `mvn clean package -DskipTests` in the root folder of the project </br>
 I have used 'docker build' to build the images </br></br>
+To build all the images run `./build_docker.sh` in the root folder of the project </br></br>
 **A table with tags for the different services** </br>
 
 | Service         | Tag                                              |
@@ -15,7 +18,7 @@ I have used 'docker build' to build the images </br></br>
 
 
 ### Run
-docker-compose -f docker-compose-service4.yml up
+`docker-compose -f docker-compose-service4.yml up`
 
 ## Description of the app
 This app is meant to motivate children to do their chores at home and gain experience with 
