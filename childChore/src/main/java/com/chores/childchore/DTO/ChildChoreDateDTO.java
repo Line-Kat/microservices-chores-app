@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -13,6 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 public class ChildChoreDateDTO {
-    private Date date;
+    private LocalDate date;
     List<ChildChoreDTO> listOfChildChoreDTO;
 }
