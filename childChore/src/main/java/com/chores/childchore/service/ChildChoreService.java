@@ -19,22 +19,23 @@ public class ChildChoreService {
     private final RewardEventPublisher rewardEventPublisher;
     private final ChildChoreRepository childChoreRepository;
 
+    // Method to add a chore to a child
     public ChildChore addChoreToChild(ChildChore childChore) {
-
         return childChoreRepository.save(childChore);
     }
 
-
-
-
-
-
-
-
-
+    // Method to get a list of all the chores of a child
     public List<ChildChore> getAllChores(UUID childUuid) {
-        return childChoreRepository.findAllByChildUuid(childUuid);
+        return childChoreRepository.getAllChores(childUuid);
     }
+
+
+
+
+
+
+
+
 
     public void deleteChildChore(ChildChore childChore) {
         ChildChore cc = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
@@ -56,7 +57,7 @@ public class ChildChoreService {
     // Need to change RewardEvent to send a List of childChoreDate-objects
     private void checkStatusOfListOfChores(UUID childUuid) {
 
-        List<ChildChore> listOfChores = childChoreRepository.findAllByChildUuid(childUuid);
+        List<ChildChore> listOfChores = childChoreRepository.getAllChores(childUuid);
 
         List<Integer> listSendToRabbitMQ = new ArrayList<>();
 

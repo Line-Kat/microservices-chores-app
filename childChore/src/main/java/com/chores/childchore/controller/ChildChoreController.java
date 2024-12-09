@@ -31,6 +31,14 @@ public class ChildChoreController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
     }
 
+    // Method to return a child's list of today's chores
+    @GetMapping("/{childUuid}")
+    public ResponseEntity<ChildChoreDateDTO> getChoresOfToday(@PathVariable UUID childUuid) {
+        List<ChildChoreDTO> listOfChildChoreDTO = mapToListOfChildChoreDTO(childChoreService.getAllChores(childUuid));
+
+        return ResponseEntity.status(HttpStatus.OK).body(mapToChildChoreDateDTO(listOfChildChoreDTO));
+    }
+
 
 
 
@@ -51,40 +59,39 @@ public class ChildChoreController {
         childChoreService.deleteChildChore(mapToChildChore(childChoreDTO));
     }
 
-    // returns the chores of the day
-    @GetMapping("/{childUuid}")
-    public ResponseEntity<ChildChoreDateDTO> getAllChoresByChildUuid(@PathVariable UUID childUuid) {
-        List<ChildChoreDTO> listOfChildChoreDTO = mapListOfChildChoreDTO(childChoreService.getAllChores(childUuid));
 
-        // return an object ChildChoreDate, so the frontend can give a positive feedback to child when all the chores
-        // of the day is completed
-
-        //mapping if childchoredto == date.now -> pakke i en ChildChoreDate (containts the date and
-
-        return ResponseEntity.status(HttpStatus.OK).body(mapToChildChoreDateDTO(listOfChildChoreDTO));
-    }
 
     // Mapping
     private ChildChoreDateDTO mapToChildChoreDateDTO(List<ChildChoreDTO> listOfChildChoreDTO) {
-        List<ChildChoreDTO> listOfTodaysChores = new ArrayList<>();
+        List<ChildChoreDTO> listChoresOfToday = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         for(ChildChoreDTO childChoreDTO : listOfChildChoreDTO) {
-
             if(formatter.format(childChoreDTO.getDate()).equals(LocalDate.now().toString())) {
-                listOfTodaysChores.add(childChoreDTO);
+                listChoresOfToday.add(childChoreDTO);
             }
         }
 
-        ChildChoreDateDTO childChoreDateDTO = new ChildChoreDateDTO();
-        childChoreDateDTO.setDate(LocalDate.now());
-        // Returns an empty list if the child has no chores that day
-        childChoreDateDTO.setListOfChildChoreDTO(listOfTodaysChores);
-
-        return childChoreDateDTO;
+        return new ChildChoreDateDTO((LocalDate.now()), listChoresOfToday);
     }
 
-    private List<ChildChoreDTO> mapListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
+    private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
+    }
+
+    private ChildChore mapToChildChore(ChildChoreDTO childChoreDTO) {
+        ChildChore childChore = new ChildChore();
+        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
+        childChore.setChildUuid(childChoreDTO.getChildUuid());
+        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
+        childChore.setDate(childChoreDTO.getDate());
+        childChore.setStatus(childChoreDTO.getStatus());
+        childChoreDTO.setValue(childChoreDTO.getValue());
+
+        return childChore;
+    }
+
+    private List<ChildChoreDTO> mapToListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
         List<ChildChoreDTO> listOfChildChoreDTO = new ArrayList<>();
         for(ChildChore cc : listOfChildChore) {
             listOfChildChoreDTO.add(mapToChildChoreDTO(cc));
@@ -93,16 +100,10 @@ public class ChildChoreController {
         return listOfChildChoreDTO;
     }
 
-    private ChildChore mapToChildChore(ChildChoreDTO childChoreDTO) {
-        ChildChore childChore = new ChildChore();
-        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
-        childChore.setChildUuid(childChore.getChildUuid());
-        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
-        childChore.setDate(childChoreDTO.getDate());
-        childChore.setStatus(childChoreDTO.getStatus());
 
-        return childChore;
-    }
+
+
+
 
     // Refactor
     private ChildChore mapChildChore(ChildChoreDTO childChoreDTO, UUID childUuid) {
@@ -118,9 +119,6 @@ public class ChildChoreController {
         return childChore;
     }
 
-    // Remove one of the (they are identical except from method name
-    private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
-    }
+
 
 }
