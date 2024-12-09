@@ -1,4 +1,4 @@
-package com.chores.childchore.DTO;
+package com.chores.reward.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +14,5 @@ import java.util.List;
 @Setter
 public class ChildChoreDateDTO {
     private Date date;
-    List<ChildChoreDTO> listOfChildChoreDTO;
+    private List<ChildChoreDTO> listOfChildChoreDTO;
 }

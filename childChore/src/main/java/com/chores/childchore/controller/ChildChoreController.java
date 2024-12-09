@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,11 +54,14 @@ public class ChildChoreController {
 
 
 
-
     @DeleteMapping("/remove")
     public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
         childChoreService.deleteChildChore(mapToChildChore(childChoreDTO));
     }
+
+
+
+
 
 
 
@@ -66,13 +70,13 @@ public class ChildChoreController {
         List<ChildChoreDTO> listChoresOfToday = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        for(ChildChoreDTO childChoreDTO : listOfChildChoreDTO) {
-            if(formatter.format(childChoreDTO.getDate()).equals(LocalDate.now().toString())) {
+        for (ChildChoreDTO childChoreDTO : listOfChildChoreDTO) {
+            if (formatter.format(childChoreDTO.getDate()).equals(LocalDate.now().toString())) {
                 listChoresOfToday.add(childChoreDTO);
             }
         }
 
-        return new ChildChoreDateDTO((LocalDate.now()), listChoresOfToday);
+        return new ChildChoreDateDTO(new Date(), listChoresOfToday);
     }
 
     private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
@@ -93,7 +97,7 @@ public class ChildChoreController {
 
     private List<ChildChoreDTO> mapToListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
         List<ChildChoreDTO> listOfChildChoreDTO = new ArrayList<>();
-        for(ChildChore cc : listOfChildChore) {
+        for (ChildChore cc : listOfChildChore) {
             listOfChildChoreDTO.add(mapToChildChoreDTO(cc));
         }
 

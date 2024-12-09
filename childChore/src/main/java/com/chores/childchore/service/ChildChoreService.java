@@ -1,5 +1,7 @@
 package com.chores.childchore.service;
 
+import com.chores.childchore.DTO.ChildChoreDTO;
+import com.chores.childchore.DTO.ChildChoreDateDTO;
 import com.chores.childchore.eventdriven.RewardEventPublisher;
 import com.chores.childchore.model.ChildChore;
 import com.chores.childchore.model.ChildChoreStatus;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,19 +34,6 @@ public class ChildChoreService {
         return childChoreRepository.findAllChoresByChildUuid(childUuid);
     }
 
-
-
-
-
-
-
-
-
-    public void deleteChildChore(ChildChore childChore) {
-        ChildChore cc = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
-        childChoreRepository.deleteById(cc.getChildChoreId());
-    }
-
     // Method to update a childChore
     // If the status is updated, another method is called to check if all the chores of the day are completed
     public ChildChore updateChildChore(ChildChore childChore, String field) {
@@ -57,37 +47,53 @@ public class ChildChoreService {
                 tempChildChore.setStatus(childChore.getStatus());
 
                 // Calls this method to check if the list of today's chores are completed
-                checkStatusOfListOfChores(tempChildChore.getChildUuid());
+                checkStatusOfTheChoresOfToday(tempChildChore.getChildUuid());
             }
             case "date" ->
                 // Change the date of the childChore
-                    tempChildChore.setDate(childChore.getDate());
+                tempChildChore.setDate(childChore.getDate());
             case "value" ->
                 // Change the value of the childChore
-                    tempChildChore.setValue(childChore.getValue());
+                tempChildChore.setValue(childChore.getValue());
         }
 
         return childChoreRepository.save(tempChildChore);
     }
 
+    // Method to send a message to rabbitMQ if all the chores on today's list are completed
+    private void checkStatusOfTheChoresOfToday(UUID childUuid) {
+        // Get all the child's chores
+        List<ChildChore> listOfChildChore = childChoreRepository.findAllChoresByChildUuid(childUuid);
 
+        List<ChildChoreDTO> listSendToRabbitMQ = new ArrayList<>();
 
-    // Need to change RewardEvent to send a List of childChoreDate-objects
-    private void checkStatusOfListOfChores(UUID childUuid) {
-
-        List<ChildChore> listOfChores = childChoreRepository.findAllChoresByChildUuid(childUuid);
-
-        List<Integer> listSendToRabbitMQ = new ArrayList<>();
-
-        // I should send a list of a child's chores of the day (ChildChoreDateDTO)
-        for (ChildChore chore : listOfChores) {
+        // Add the completed chores to a new list
+        for (ChildChore chore : listOfChildChore) {
             if (chore.getStatus() == ChildChoreStatus.COMPLETED) {
-                listSendToRabbitMQ.add(chore.getValue());
+                listSendToRabbitMQ.add(mapToChildChoreDTO(chore));
             }
         }
 
-        if(listOfChores.size() == listSendToRabbitMQ.size() && !listSendToRabbitMQ.isEmpty()) {
-            rewardEventPublisher.publishRewardEvent(childUuid, listSendToRabbitMQ);
+        // Check if the list being sent to rabbitMQ is not empty and that all the chores on the list are completed
+        if (!listSendToRabbitMQ.isEmpty() && listOfChildChore.size() == listSendToRabbitMQ.size()) {
+            // Map to an object to send to rabbitMQ
+            ChildChoreDateDTO childChoreDateDTO = new ChildChoreDateDTO(new Date(), listSendToRabbitMQ);
+
+            rewardEventPublisher.publishRewardEvent(childChoreDateDTO);
         }
+    }
+
+
+
+
+
+    public void deleteChildChore(ChildChore childChore) {
+        ChildChore cc = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
+        childChoreRepository.deleteById(cc.getChildChoreId());
+    }
+
+    // Mapping
+    private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
     }
 }

@@ -27,13 +27,13 @@ walking the dog, etc. A parent creates an account and can create several child p
 the parent that manages which chores are on the child's profile. A child has its own profile 
 where today’s chores and balance is shown. When a chore is done, the child can mark it as 
 completed. When all the chores for a day are marked as done, an amount of money is added to 
-the child’s balance. In addition, the child can create a saving goal and when money is earned, 
-the child can see that the amount of money left to save decreases. This might help keep the 
+the child’s balance. In addition, the child can create a saving goal and as they earn money, 
+they will see the remaining amount needed to reach their goal decrease. This might help keep the 
 child’s motivation up to continue doing chores in addition to learning about economics.
 
 ### The services
 - ### gateway
-lb (user, childchore, reward)
+lb (user, childChore, reward)
 
 - ### consul-importer
 service that closes after importing configuration-files to Consul

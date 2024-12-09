@@ -9,12 +9,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmqpConfiguration {
-    // The service childChore is sending a message to rabbitMQ
 
     // Name of the Exchanger
     @Bean
     public TopicExchange rewardTopicExchange(
-            @Value("${topic.exchange.name}") final String exchangeName
+            @Value("${amqp.exchange.name}") final String exchangeName
     ) {
         // The exchange object
         return ExchangeBuilder
