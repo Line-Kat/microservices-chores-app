@@ -1,14 +1,15 @@
 package com.chores.reward.service;
 
+import com.chores.reward.DTO.ChildChoreDTO;
 import com.chores.reward.eventdriven.RewardEvent;
 import com.chores.reward.model.Balance;
-import com.chores.reward.model.SavingGoal;
 import com.chores.reward.repository.BalanceRepository;
 import com.chores.reward.repository.SavingGoalRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,22 +48,25 @@ public class BalanceService {
         return balanceRepository.save(tempBalance);
     }
 
+    // method receives a ChildChoreDateDTO and updates a child's balance
     public void updateBalance(RewardEvent message) {
-        // receives message (childUuid and a list of childChoreValues) from rabbitMQ
+        List<ChildChoreDTO> listOfChildChoreDTO = message.getChildChoreDateDTO().getListOfChildChoreDTO();
+        UUID childUuid = listOfChildChoreDTO.get(0).getChildUuid();
 
-        Balance balance = balanceRepository.findBalanceByChildUuid(message.getChildUuid()).orElseThrow();
-        int value = balance.getBalanceValue();
+        Balance balance = balanceRepository.findBalanceByChildUuid(childUuid).orElseThrow();
+        int currentValue = balance.getBalanceValue();
+        int addedValue = 0;
 
-        for(int childChoreValue : message.getChildChoreValues()) {
-            value += childChoreValue;
+        for(ChildChoreDTO cc : listOfChildChoreDTO) {
+            addedValue += cc.getValue();
         }
 
-        balance.setBalanceValue(value);
-
+        int newValue = currentValue + addedValue;
+        balance.setBalanceValue(newValue);
         balanceRepository.save(balance);
 
-        if (savingGoalRepository.getSavingGoalByChildUuid(message.getChildUuid()).isPresent()) {
-            savingGoalService.updateSavingGoal(message.getChildUuid(), (long) value);
-        }
+        savingGoalRepository.getSavingGoalByChildUuid(childUuid)
+                .ifPresent(savingGoal -> savingGoalService.updateSavingGoal(childUuid, (long) newValue));
+
     }
 }

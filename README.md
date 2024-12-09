@@ -1,6 +1,9 @@
 ## Instructions on how to build and run the application
 ### Build
+First package the services using Maven </br>
+Run `mvn clean package -DskipTests` in the root folder of the project </br>
 I have used 'docker build' to build the images </br></br>
+To build all the images run `./build_docker.sh` in the root folder of the project </br></br>
 **A table with tags for the different services** </br>
 
 | Service         | Tag                                              |
@@ -15,7 +18,7 @@ I have used 'docker build' to build the images </br></br>
 
 
 ### Run
-docker-compose -f docker-compose-service4.yml up
+`docker-compose -f docker-compose-service4.yml up`
 
 ## Description of the app
 This app is meant to motivate children to do their chores at home and gain experience with 
@@ -24,13 +27,13 @@ walking the dog, etc. A parent creates an account and can create several child p
 the parent that manages which chores are on the child's profile. A child has its own profile 
 where today’s chores and balance is shown. When a chore is done, the child can mark it as 
 completed. When all the chores for a day are marked as done, an amount of money is added to 
-the child’s balance. In addition, the child can create a saving goal and when money is earned, 
-the child can see that the amount of money left to save decreases. This might help keep the 
+the child’s balance. In addition, the child can create a saving goal and as they earn money, 
+they will see the remaining amount needed to reach their goal decrease. This might help keep the 
 child’s motivation up to continue doing chores in addition to learning about economics.
 
 ### The services
 - ### gateway
-lb (user, childchore, reward)
+lb (user, childChore, reward)
 
 - ### consul-importer
 service that closes after importing configuration-files to Consul
@@ -75,6 +78,8 @@ that I know I’m done with that day’s chores
 to changes happening that day
 - As a parent user, I can move the completion date of a chore, so that I can postpone a task 
 that cannot be completed that day
+- As a parent user, I can change the value of the completion of a child's chore, so that I can motivate the child
+to complete the chore
 - As a parent user, I can update my child’s balance when they are using their earnings, 
 so that the balance is correct
 

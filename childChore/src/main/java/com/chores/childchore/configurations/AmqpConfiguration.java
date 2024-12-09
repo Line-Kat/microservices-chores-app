@@ -9,16 +9,16 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmqpConfiguration {
-    // because for the user to publish something somewhere, it needs to know the name of the exchange
 
+    // Name of the Exchanger
     @Bean
     public TopicExchange rewardTopicExchange(
             @Value("${amqp.exchange.name}") final String exchangeName
     ) {
-        // the exchange object
+        // The exchange object
         return ExchangeBuilder
                 .topicExchange(exchangeName)
-                .durable(true) // messages don't get lost if the broker goes down
+                .durable(true) // The messages don't get lost if the broker goes down
                 .build();
     }
 

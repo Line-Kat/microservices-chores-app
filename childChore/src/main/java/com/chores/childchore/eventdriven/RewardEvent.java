@@ -1,13 +1,10 @@
 package com.chores.childchore.eventdriven;
 
+import com.chores.childchore.DTO.ChildChoreDateDTO;
 import lombok.Value;
 
-import java.util.List;
-import java.util.UUID;
-
-// event that is sent to rabbitMQ
+// Event that is sent to rabbitMQ
 @Value()
 public class RewardEvent {
-    UUID childUuid;
-    List<Integer> childChoreValues;
+    ChildChoreDateDTO childChoreDateDTO;
 }

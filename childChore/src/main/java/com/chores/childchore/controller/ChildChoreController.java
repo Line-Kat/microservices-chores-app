@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,100 +23,84 @@ public class ChildChoreController {
 
     private final ChildChoreService childChoreService;
 
+    // Method to add a chore to a child
     @PostMapping("/addchore")
     public ResponseEntity<ChildChoreDTO> addChoreToChild(@RequestBody ChildChoreDTO childChoreDTO) {
 
-        ChildChore tempChildChore = childChoreService.addChoreToChild(childChoreDTO.getChildUuid(), childChoreDTO.getChoreUuid(), childChoreDTO.getChildChoreUuid(), childChoreDTO.getDate(), childChoreDTO.getStatus(), childChoreDTO.getValue());
-        ChildChoreDTO tempChildChoreDTO = mapChoreDTO(tempChildChore);
+        ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
 
-        return ResponseEntity.status(HttpStatus.OK).body(tempChildChoreDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
     }
 
-    @PutMapping("/{childUuid}")
-    public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
-        ChildChore tempChildChore = childChoreService.updateChildChore(mapChildChore(childChoreDTO, childUuid));
-
-        ChildChoreDTO newChildChoreDTO = mapChildChoreDTO(tempChildChore);
-
-        return ResponseEntity.status(HttpStatus.OK).body(newChildChoreDTO);
-    }
-
-    @DeleteMapping("/remove")
-    public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
-        childChoreService.deleteChildChore(mapChore(childChoreDTO));
-    }
-
-    // returns the chores of the day
+    // Method to return a child's list of today's chores
     @GetMapping("/{childUuid}")
-    public ResponseEntity<ChildChoreDateDTO> getAllChoresByChildUuid(@PathVariable UUID childUuid) {
-        List<ChildChoreDTO> listOfChildChoreDTO = mapListOfChildChoreDTO(childChoreService.getAllChores(childUuid));
-
-        // return an object ChildChoreDate, so the frontend can give a positive feedback to child when all the chores
-        // of the day is completed
-
-        //mapping if childchoredto == date.now -> pakke i en ChildChoreDate (containts the date and
+    public ResponseEntity<ChildChoreDateDTO> getChoresOfToday(@PathVariable UUID childUuid) {
+        List<ChildChoreDTO> listOfChildChoreDTO = mapToListOfChildChoreDTO(childChoreService.getAllChores(childUuid));
 
         return ResponseEntity.status(HttpStatus.OK).body(mapToChildChoreDateDTO(listOfChildChoreDTO));
     }
 
+    // Method to update a child's chore (status, date or value)
+    // /{field}, field can be 'status', 'date' or 'value'
+    @PutMapping("/update/{field}")
+    public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable String field, @RequestBody ChildChoreDTO childChoreDTO) {
+        ChildChore childChore = childChoreService.updateChildChore(mapToChildChore(childChoreDTO), field);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
+    }
+
+
+
+
+
+
+    @DeleteMapping("/remove")
+    public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
+        childChoreService.deleteChildChore(mapToChildChore(childChoreDTO));
+    }
+
+
+
+
+
+
+
     // Mapping
     private ChildChoreDateDTO mapToChildChoreDateDTO(List<ChildChoreDTO> listOfChildChoreDTO) {
-        List<ChildChoreDTO> listOfTodaysChores = new ArrayList<>();
+        List<ChildChoreDTO> listChoresOfToday = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        for(ChildChoreDTO childChoreDTO : listOfChildChoreDTO) {
-
-            if(formatter.format(childChoreDTO.getDate()).equals(LocalDate.now().toString())) {
-                listOfTodaysChores.add(childChoreDTO);
+        for (ChildChoreDTO childChoreDTO : listOfChildChoreDTO) {
+            if (formatter.format(childChoreDTO.getDate()).equals(LocalDate.now().toString())) {
+                listChoresOfToday.add(childChoreDTO);
             }
         }
 
-        ChildChoreDateDTO childChoreDateDTO = new ChildChoreDateDTO();
-        childChoreDateDTO.setDate(listOfTodaysChores.get(0).getDate());
-        childChoreDateDTO.setListOfChildChoreDTO(listOfTodaysChores);
-
-        return childChoreDateDTO;
+        return new ChildChoreDateDTO(new Date(), listChoresOfToday);
     }
 
-    private List<ChildChoreDTO> mapListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
+    private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
+        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
+    }
+
+    private ChildChore mapToChildChore(ChildChoreDTO childChoreDTO) {
+        ChildChore childChore = new ChildChore();
+        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
+        childChore.setChildUuid(childChoreDTO.getChildUuid());
+        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
+        childChore.setDate(childChoreDTO.getDate());
+        childChore.setStatus(childChoreDTO.getStatus());
+        childChore.setValue(childChoreDTO.getValue());
+
+        return childChore;
+    }
+
+    private List<ChildChoreDTO> mapToListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
         List<ChildChoreDTO> listOfChildChoreDTO = new ArrayList<>();
-        for(ChildChore cc : listOfChildChore) {
-            listOfChildChoreDTO.add(mapChoreDTO(cc));
+        for (ChildChore cc : listOfChildChore) {
+            listOfChildChoreDTO.add(mapToChildChoreDTO(cc));
         }
 
         return listOfChildChoreDTO;
-    }
-
-    private ChildChore mapChore(ChildChoreDTO childChoreDTO) {
-        ChildChore childChore = new ChildChore();
-        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
-        childChore.setChildUuid(childChore.getChildUuid());
-        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
-        childChore.setDate(childChoreDTO.getDate());
-        childChore.setStatus(childChoreDTO.getStatus());
-
-        return childChore;
-    }
-
-    // Refactor
-    private ChildChore mapChildChore(ChildChoreDTO childChoreDTO, UUID childUuid) {
-
-        ChildChore childChore = new ChildChore();
-
-        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
-        childChore.setChildUuid(childUuid);
-        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
-        childChore.setDate(childChoreDTO.getDate());
-        childChore.setStatus(childChoreDTO.getStatus());
-
-        return childChore;
-    }
-
-    private ChildChoreDTO mapChildChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
-    }
-
-    private ChildChoreDTO mapChoreDTO(ChildChore childChore) {
-        return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
     }
 }

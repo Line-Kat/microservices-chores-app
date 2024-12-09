@@ -15,13 +15,12 @@ public class RewardEventHandler {
     @RabbitListener(
             queues = "chore.completed"
     )
-
     void handleRewardEvent(
             RewardEvent message
     ) {
+        log.info("RECEIVED FROM RABBIT: " + message);
 
         balanceService.updateBalance(message);
 
-        // if child has a saving goal savingGoalService.updateSavingGoal()
     }
 }
