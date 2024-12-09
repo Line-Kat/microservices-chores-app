@@ -78,6 +78,8 @@ that I know I’m done with that day’s chores
 to changes happening that day
 - As a parent user, I can move the completion date of a chore, so that I can postpone a task 
 that cannot be completed that day
+- As a parent user, I can change the value of the completion of a child's chore, so that I can motivate the child
+to complete the chore
 - As a parent user, I can update my child’s balance when they are using their earnings, 
 so that the balance is correct
 

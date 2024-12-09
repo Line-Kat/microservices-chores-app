@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface ChildChoreRepository extends JpaRepository<ChildChore, Long> {
     Optional<ChildChore> findChildChoreByUuid(UUID uuid);
-    List<ChildChore> getAllChores(UUID childUuid);
+    List<ChildChore> findAllChoresByChildUuid(UUID childUuid);
 }

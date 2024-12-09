@@ -39,20 +39,20 @@ public class ChildChoreController {
         return ResponseEntity.status(HttpStatus.OK).body(mapToChildChoreDateDTO(listOfChildChoreDTO));
     }
 
+    // Method to update a child's chore (status, date or value)
+    // /{field}, field can be 'status', 'date' or 'value'
+    @PutMapping("/update/{field}")
+    public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable String field, @RequestBody ChildChoreDTO childChoreDTO) {
+        ChildChore childChore = childChoreService.updateChildChore(mapToChildChore(childChoreDTO), field);
 
-
-
-
-
-
-    @PutMapping("/{childUuid}")
-    public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable UUID childUuid, @RequestBody ChildChoreDTO childChoreDTO) {
-        ChildChore tempChildChore = childChoreService.updateChildChore(mapChildChore(childChoreDTO, childUuid));
-
-        ChildChoreDTO newChildChoreDTO = mapToChildChoreDTO(tempChildChore);
-
-        return ResponseEntity.status(HttpStatus.OK).body(newChildChoreDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
     }
+
+
+
+
+
+
 
     @DeleteMapping("/remove")
     public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
@@ -86,7 +86,7 @@ public class ChildChoreController {
         childChore.setChoreUuid(childChoreDTO.getChoreUuid());
         childChore.setDate(childChoreDTO.getDate());
         childChore.setStatus(childChoreDTO.getStatus());
-        childChoreDTO.setValue(childChoreDTO.getValue());
+        childChore.setValue(childChoreDTO.getValue());
 
         return childChore;
     }
@@ -99,26 +99,4 @@ public class ChildChoreController {
 
         return listOfChildChoreDTO;
     }
-
-
-
-
-
-
-    // Refactor
-    private ChildChore mapChildChore(ChildChoreDTO childChoreDTO, UUID childUuid) {
-
-        ChildChore childChore = new ChildChore();
-
-        childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
-        childChore.setChildUuid(childUuid);
-        childChore.setChoreUuid(childChoreDTO.getChoreUuid());
-        childChore.setDate(childChoreDTO.getDate());
-        childChore.setStatus(childChoreDTO.getStatus());
-
-        return childChore;
-    }
-
-
-
 }
