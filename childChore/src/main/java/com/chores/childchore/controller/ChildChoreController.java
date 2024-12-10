@@ -26,7 +26,7 @@ public class ChildChoreController {
     // Method to add a chore to a child
     @PostMapping("/addchore")
     public ResponseEntity<ChildChoreDTO> addChoreToChild(@RequestBody ChildChoreDTO childChoreDTO) {
-
+        // Create the childChore object
         ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
@@ -49,23 +49,15 @@ public class ChildChoreController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
     }
 
-
-
-
-
-
+    // Method to delete a chore from a child
     @DeleteMapping("/remove")
     public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
         childChoreService.deleteChildChore(mapToChildChore(childChoreDTO));
     }
 
+    // Mapping methods
 
-
-
-
-
-
-    // Mapping
+    // List<ChildChoreDTO> -> ChildChoreDateDTO
     private ChildChoreDateDTO mapToChildChoreDateDTO(List<ChildChoreDTO> listOfChildChoreDTO) {
         List<ChildChoreDTO> listChoresOfToday = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -79,10 +71,12 @@ public class ChildChoreController {
         return new ChildChoreDateDTO(new Date(), listChoresOfToday);
     }
 
+    // ChildChore -> ChildChoreDTO
     private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
         return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
     }
 
+    // ChildChoreDTO -> ChildChore
     private ChildChore mapToChildChore(ChildChoreDTO childChoreDTO) {
         ChildChore childChore = new ChildChore();
         childChore.setChildChoreUuid(childChoreDTO.getChildChoreUuid());
@@ -95,6 +89,7 @@ public class ChildChoreController {
         return childChore;
     }
 
+    // List<ChildChore> -> List<ChildChoreDTO>
     private List<ChildChoreDTO> mapToListOfChildChoreDTO(List<ChildChore> listOfChildChore) {
         List<ChildChoreDTO> listOfChildChoreDTO = new ArrayList<>();
         for (ChildChore cc : listOfChildChore) {

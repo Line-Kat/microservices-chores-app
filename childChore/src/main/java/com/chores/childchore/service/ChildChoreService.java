@@ -8,7 +8,6 @@ import com.chores.childchore.model.ChildChoreStatus;
 import com.chores.childchore.repository.ChildChoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @ToString
@@ -24,7 +22,7 @@ public class ChildChoreService {
     private final RewardEventPublisher rewardEventPublisher;
     private final ChildChoreRepository childChoreRepository;
 
-    // Method to add a chore to a child
+    // Method to add a chore to a child (create a ChildChore object)
     public ChildChore addChoreToChild(ChildChore childChore) {
         return childChoreRepository.save(childChore);
     }
@@ -35,7 +33,6 @@ public class ChildChoreService {
     }
 
     // Method to update a childChore
-    // If the status is updated, another method is called to check if all the chores of the day are completed
     public ChildChore updateChildChore(ChildChore childChore, String field) {
         // Get the childChore from the database
         ChildChore tempChildChore = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
@@ -83,12 +80,11 @@ public class ChildChoreService {
         }
     }
 
-
-
-
-
+    // Method to delete a chore from a child
     public void deleteChildChore(ChildChore childChore) {
+        // Retrieve the childChore from the database to get its id
         ChildChore cc = childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid()).orElseThrow();
+
         childChoreRepository.deleteById(cc.getChildChoreId());
     }
 
