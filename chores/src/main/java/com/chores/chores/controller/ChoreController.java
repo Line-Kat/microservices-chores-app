@@ -33,6 +33,7 @@ public class ChoreController {
         return choresService.getChores();
     }
 
+    // per now I don't use this
     @GetMapping("/{uuid}")
     public ResponseEntity<ChoreDTO> getChoreByUuid(@PathVariable UUID uuid) {
         return choresService.getChoreByUuid(uuid)
