@@ -18,12 +18,13 @@ import java.util.UUID;
 public class BalanceController {
     private final BalanceService balanceService;
 
-    @PostMapping("/{childUuid}")
-    public ResponseEntity<BalanceDTO> createBalance(@PathVariable UUID childUuid) {
-        Balance balance = balanceService.addBalanceToChild(childUuid);
-        BalanceDTO balanceDTO = mapBalanceDTO(balance);
+    @PostMapping
+    public ResponseEntity<BalanceDTO> createBalance(@RequestBody BalanceDTO balanceDTO) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(balanceDTO);
+        Balance balance = balanceService.addBalanceToChild(balanceDTO.getChildUuid());
+        BalanceDTO createdBalanceDTO = mapBalanceDTO(balance);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBalanceDTO);
     }
 
     @GetMapping("/{childUuid}")

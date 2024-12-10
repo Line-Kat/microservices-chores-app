@@ -35,7 +35,7 @@ public class RewardClient {
     // This Reward comes from the Reward service
     // Need to call this function to get a child's balance
     public BalanceDTO createBalance(UUID childUuid) {
-        String url = restServiceUrl + "/reward/balance/" + childUuid;
+        String url = restServiceUrl + "/reward/balance";
 
         ResponseEntity<BalanceDTO> response;
 
