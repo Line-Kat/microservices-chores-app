@@ -21,24 +21,3 @@ spring:
           uri: lb://childChore
           predicates:
             - Path=/childchore, /childchore/**
-
-
-      # If I implement frontend I need the code below
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowed-origins:
-              - '*' #"http://localhost:3000" # frontend
-            allowed-headers:
-              - "*"
-            allowed-methods:
-              - "GET"
-              - "POST"
-              - "OPTIONS"
-              - "DELETE"
-      default-filters:
-        - name: Retry
-          args:
-            retries: 3 # request is automatically sent three times to the backend
-            methods: GET, POST
-
