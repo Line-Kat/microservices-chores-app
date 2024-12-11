@@ -15,15 +15,18 @@ import java.util.UUID;
 public class ChoresService {
     private final ChoresRepository choresRepository;
 
+    // Method to add a chore to the database
     public Chore createChore(Chore chore) {
         return choresRepository.save(chore);
     }
 
-    public List<Chore> getChores() {
-        return choresRepository.findAll();
-    }
-
+    // Method to retrieve a chore from the database
     public Optional<Chore> getChoreByUuid(UUID uuid) {
         return choresRepository.findChoreByUuid(uuid);
+    }
+
+    // Method to get all chores
+    public List<Chore> getChores() {
+        return choresRepository.findAll();
     }
 }
