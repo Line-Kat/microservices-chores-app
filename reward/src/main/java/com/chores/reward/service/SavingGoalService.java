@@ -24,9 +24,11 @@ public class SavingGoalService {
     }
 
     public void updateSavingGoal(UUID childUuid, Long value) {
-        SavingGoal savingGoal = savingGoalRepository.getSavingGoalByChildUuid(childUuid).orElseThrow();
-        savingGoal.setSavingGoalValue(savingGoal.getSavingGoalValue() - value);
-        savingGoalRepository.save(savingGoal);
+        // Check if the child has a saving goal and set the new value
+        savingGoalRepository.getSavingGoalByChildUuid(childUuid)
+                .ifPresent(savingGoal -> {
+                    savingGoal.setSavingGoalValue(savingGoal.getSavingGoalValue() - value);
+                    savingGoalRepository.save(savingGoal);
+                });
     }
-
 }

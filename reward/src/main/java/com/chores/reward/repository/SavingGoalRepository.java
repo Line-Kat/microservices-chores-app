@@ -1,6 +1,5 @@
 package com.chores.reward.repository;
 
-import com.chores.reward.model.Balance;
 import com.chores.reward.model.SavingGoal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

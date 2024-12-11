@@ -55,8 +55,8 @@ public class ChildService {
         return rewardClient.createSavingGoal(savingGoalDTO);
     }
 
-    public BalanceDTO parentUpdateBalance(UUID childUuid, BalanceDTO balanceDTO) {
-        return rewardClient.parentUpdateBalance(childUuid, balanceDTO);
+    public BalanceDTO parentUpdateBalance(BalanceDTO balanceDTO) {
+        return rewardClient.parentUpdateBalance(balanceDTO);
     }
 
 
