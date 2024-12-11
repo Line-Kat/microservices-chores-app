@@ -18,7 +18,7 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 
 
 ### Run
-`docker-compose -f docker-compose-service4.yml up`
+`docker-compose up`
 
 ## Description of the app
 This app is meant to motivate children to do their chores at home and gain experience with 
@@ -48,7 +48,7 @@ chores, and then updates the balance and saving goal.
 
 - ### chores
 The service has the responsibility for retrieving chores from a database. Initial chores are 
-added to the database using migration scripts.
+added to the database using Postman.
 
 - ### childChore
 The service has the responsibility for managing the child’s chores. When adding chores 
