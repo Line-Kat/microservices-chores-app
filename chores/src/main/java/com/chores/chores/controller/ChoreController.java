@@ -17,34 +17,46 @@ import java.util.UUID;
 public class ChoreController {
     private final ChoresService choresService;
 
+    // Method to add a chore to the database
     @PostMapping
     public ResponseEntity<ChoreDTO> createChore(@RequestBody ChoreDTO choreDTO) {
-        Chore newestChore = new Chore();
-        newestChore.setChoreUuid(choreDTO.getChoreUuid());
-        newestChore.setChoreName(choreDTO.getChoreName());
 
-        Chore newChore = choresService.createChore(newestChore);
+        Chore chore = choresService.createChore(mapToChore(choreDTO));
 
-        return new ResponseEntity<>(mapChoreDTO(newChore), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapChoreDTO(chore), HttpStatus.CREATED);
     }
 
+    // Method to retrieve a chore from the database
+    @GetMapping("/{choreUuid}")
+    public ResponseEntity<ChoreDTO> getChoreByUuid(@PathVariable UUID choreUuid) {
+        return choresService.getChoreByUuid(choreUuid)
+                .map(chore -> new ResponseEntity<>(mapChoreDTO(chore), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // Method to retrieve all the chores in the database
     @GetMapping("/allchores")
     public List<Chore> getAllChores() {
         return choresService.getChores();
     }
 
-    // per now I don't use this
-    @GetMapping("/{uuid}")
-    public ResponseEntity<ChoreDTO> getChoreByUuid(@PathVariable UUID uuid) {
-        return choresService.getChoreByUuid(uuid)
-                .map(chore -> new ResponseEntity<>(mapChoreDTO(chore), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // Mapping
+
+    // ChoreDTO -> Chore
+    private Chore mapToChore(ChoreDTO choreDTO) {
+        Chore chore = new Chore();
+        chore.setChoreUuid(choreDTO.getChoreUuid());
+        chore.setChoreName(choreDTO.getChoreName());
+
+        return chore;
     }
 
+    // Chore -> ChoreDTO
     private ChoreDTO mapChoreDTO(Chore chore) {
         ChoreDTO choreDTO = new ChoreDTO();
         choreDTO.setChoreName(chore.getChoreName());
         choreDTO.setChoreUuid(chore.getChoreUuid());
+
         return choreDTO;
     }
 }
