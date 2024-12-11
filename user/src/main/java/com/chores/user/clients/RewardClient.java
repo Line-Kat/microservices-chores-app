@@ -102,8 +102,8 @@ public class RewardClient {
         return response.getBody();
     }
 
-    public BalanceDTO parentUpdateBalance(UUID childUuid, BalanceDTO balanceDTO) {
-        String url = restServiceUrl + "/reward/balance/update/" + childUuid ;
+    public BalanceDTO parentUpdateBalance(BalanceDTO balanceDTO) {
+        String url = restServiceUrl + "/reward/balance/update";
         ResponseEntity<BalanceDTO> response;
 
         try {

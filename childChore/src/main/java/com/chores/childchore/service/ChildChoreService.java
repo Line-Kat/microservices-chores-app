@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -62,17 +62,22 @@ public class ChildChoreService {
         // Get all the child's chores
         List<ChildChore> listOfChildChore = childChoreRepository.findAllChoresByChildUuid(childUuid);
 
-        List<ChildChoreDTO> listSendToRabbitMQ = new ArrayList<>();
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        String today = formatDate.format(new Date());
 
-        // Add the completed chores to a new list
-        for (ChildChore chore : listOfChildChore) {
-            if (chore.getStatus() == ChildChoreStatus.COMPLETED) {
-                listSendToRabbitMQ.add(mapToChildChoreDTO(chore));
-            }
-        }
+        // To a new list, add the today's chores
+        List<ChildChore> listOfTodaysChores = listOfChildChore.stream()
+                .filter(chore -> formatDate.format(chore.getDate()).equals(today))
+                .toList();
 
-        // Check if the list being sent to rabbitMQ is not empty and that all the chores on the list are completed
-        if (!listSendToRabbitMQ.isEmpty() && listOfChildChore.size() == listSendToRabbitMQ.size()) {
+        // To a new list add all the chores completed
+        List<ChildChoreDTO> listSendToRabbitMQ = listOfTodaysChores.stream()
+                .filter(chore -> chore.getStatus() == ChildChoreStatus.COMPLETED)
+                .map(this::mapToChildChoreDTO)
+                .toList();
+
+        // If the list is not empty and all the chores on the list is completed, send a message to rabbitMQ
+        if (!listSendToRabbitMQ.isEmpty() && listSendToRabbitMQ.size() == listOfTodaysChores.size()) {
             // Map to an object to send to rabbitMQ
             ChildChoreDateDTO childChoreDateDTO = new ChildChoreDateDTO(new Date(), listSendToRabbitMQ);
 

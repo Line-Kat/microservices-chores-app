@@ -51,10 +51,10 @@ public class ChildController {
     }
 
 
-    @PutMapping("/balance/update/{childUuid}")
-    public ResponseEntity<BalanceDTO> updateBalance(@PathVariable UUID childUuid, @RequestBody BalanceDTO balanceDTO) {
-        BalanceDTO newBalanceDTO = childService.parentUpdateBalance(childUuid, balanceDTO);
+    @PutMapping("/balance/update")
+    public ResponseEntity<BalanceDTO> updateBalance(@RequestBody BalanceDTO balanceDTO) {
 
+        BalanceDTO newBalanceDTO = childService.parentUpdateBalance(balanceDTO);
         return ResponseEntity.status(HttpStatus.OK).body(newBalanceDTO);
     }
 

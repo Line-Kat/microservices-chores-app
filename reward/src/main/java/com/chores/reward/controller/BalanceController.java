@@ -4,29 +4,28 @@ import com.chores.reward.DTO.BalanceDTO;
 import com.chores.reward.model.Balance;
 import com.chores.reward.service.BalanceService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequestMapping("/reward/balance")
 @RequiredArgsConstructor
 public class BalanceController {
     private final BalanceService balanceService;
 
+    // Method to create a child's balance
     @PostMapping
-    public ResponseEntity<BalanceDTO> createBalance(@RequestBody BalanceDTO balanceDTO) {
+    public ResponseEntity<BalanceDTO> addBalanceToChild(@RequestBody BalanceDTO balanceDTO) {
 
         Balance balance = balanceService.addBalanceToChild(balanceDTO.getChildUuid());
-        BalanceDTO createdBalanceDTO = mapBalanceDTO(balance);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBalanceDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapBalanceDTO(balance));
     }
 
+    // Method to get a child's balance
     @GetMapping("/{childUuid}")
     public ResponseEntity<BalanceDTO> getBalance(@PathVariable UUID childUuid) {
         return balanceService.getBalance(childUuid)
@@ -34,24 +33,28 @@ public class BalanceController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/update/{childUuid}")
-    public ResponseEntity<BalanceDTO> parentUpdateBalance(@PathVariable UUID childUuid, @RequestBody BalanceDTO balanceDTO) {
-        Balance tempBalance = balanceService.parentUpdateBalance(mapBalance(childUuid, balanceDTO));
-        return ResponseEntity.status(HttpStatus.OK).body(mapBalanceDTO(tempBalance));
+    // Method for parent to update a child's chore
+    @PutMapping("/update")
+    public ResponseEntity<BalanceDTO> parentUpdateBalance(@RequestBody BalanceDTO balanceDTO) {
+        Balance balance = balanceService.parentUpdateBalance(mapBalance(balanceDTO));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapBalanceDTO(balance));
     }
 
     // Mapping
+
+    // Balance -> BalanceDTO
     private BalanceDTO mapBalanceDTO(Balance balance) {
         return new BalanceDTO(balance.getBalanceUuid(), balance.getChildUuid(), balance.getBalanceValue());
     }
 
-    private Balance mapBalance(UUID childUuid, BalanceDTO balanceDTO) {
+    // BalanceDTO -> Balance
+    private Balance mapBalance(BalanceDTO balanceDTO) {
         Balance balance = new Balance();
         balance.setBalanceUuid(balanceDTO.getBalanceUuid());
-        balance.setChildUuid(childUuid);
+        balance.setChildUuid(balanceDTO.getChildUuid());
         balance.setBalanceValue(balanceDTO.getBalanceValue());
 
         return balance;
     }
-
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 @ToString
 @Table(name = "balance")
 
-@NamedQuery(name = "Balance.findBalanceByChildUuid", query = "select c from Balance c where c.childUuid = ?1")
+@NamedQuery(name = "Balance.findBalanceByChildUuid", query = "select b from Balance b where b.childUuid = ?1")
 public class Balance {
 
     @Id
@@ -29,5 +29,4 @@ public class Balance {
 
     @Column(name = "balance_value")
     private int balanceValue;
-
 }

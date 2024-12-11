@@ -1,7 +1,6 @@
 package com.chores.reward.repository;
 
 import com.chores.reward.model.Balance;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
