@@ -1,6 +1,7 @@
 package com.chores.reward.controller;
 
 import com.chores.reward.DTO.BalanceDTO;
+import com.chores.reward.DTO.ChangeInBalanceDTO;
 import com.chores.reward.model.Balance;
 import com.chores.reward.service.BalanceService;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,10 @@ public class BalanceController {
 
     // Method for parent to update a child's chore
     @PutMapping("/update")
-    public ResponseEntity<BalanceDTO> parentUpdateBalance(@RequestBody BalanceDTO balanceDTO) {
-        Balance balance = balanceService.parentUpdateBalance(mapBalance(balanceDTO));
+    public ResponseEntity<BalanceDTO> parentUpdateBalance(@RequestBody ChangeInBalanceDTO changeInBalanceDTO) {
+        Balance balance = balanceService.parentUpdateBalance(changeInBalanceDTO.getChildUuid(), changeInBalanceDTO.getAmount());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapBalanceDTO(balance));
+        return ResponseEntity.status(HttpStatus.OK).body(mapBalanceDTO(balance));
     }
 
     // Mapping

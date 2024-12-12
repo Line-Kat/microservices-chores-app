@@ -1,6 +1,7 @@
 package com.chores.user.service;
 
 import com.chores.user.DTO.BalanceDTO;
+import com.chores.user.DTO.ChangeInBalanceDTO;
 import com.chores.user.DTO.SavingGoalDTO;
 import com.chores.user.clients.RewardClient;
 import com.chores.user.model.Child;
@@ -23,6 +24,8 @@ public class ChildService {
     private final ParentService parentService;
     private final RewardClient rewardClient;
     private final ParentRepository parentRepository;
+
+    // CHILD
 
     // Method to create a child
     public Child createChild(Child child, UUID parentUuid) {
@@ -47,19 +50,21 @@ public class ChildService {
         return childRepository.save(child);
     }
 
-
-
-
-
+    // Method to retrieve a child from the database
     public Optional<Child> findChildByUuid(UUID childUuid) {
-
         return childRepository.findChildByUuid(childUuid);
     }
 
+    // BALANCE
 
-
+    // Method to get a child's balance
     public Optional<BalanceDTO> getBalance(UUID childUuid) {
         return rewardClient.getBalance(childUuid);
+    }
+
+    // Method for parent to update a child's balance
+    public BalanceDTO parentUpdateBalance(ChangeInBalanceDTO changeInBalance) {
+        return rewardClient.parentUpdateBalance(changeInBalance);
     }
 
     public Optional<SavingGoalDTO> getSavingGoal(UUID childUuid) {
@@ -70,9 +75,7 @@ public class ChildService {
         return rewardClient.createSavingGoal(savingGoalDTO);
     }
 
-    public BalanceDTO parentUpdateBalance(BalanceDTO balanceDTO) {
-        return rewardClient.parentUpdateBalance(balanceDTO);
-    }
+
 
 
 }

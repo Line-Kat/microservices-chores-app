@@ -1,6 +1,7 @@
 package com.chores.user.clients;
 
 import com.chores.user.DTO.BalanceDTO;
+import com.chores.user.DTO.ChangeInBalanceDTO;
 import com.chores.user.DTO.SavingGoalDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,12 +103,12 @@ public class RewardClient {
         return response.getBody();
     }
 
-    public BalanceDTO parentUpdateBalance(BalanceDTO balanceDTO) {
+    public BalanceDTO parentUpdateBalance(ChangeInBalanceDTO changeInBalanceDTO) {
         String url = restServiceUrl + "/reward/balance/update";
         ResponseEntity<BalanceDTO> response;
 
         try {
-            response = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(balanceDTO), BalanceDTO.class);
+            response = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(changeInBalanceDTO), BalanceDTO.class);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
