@@ -3,9 +3,7 @@ package com.chores.user.controller;
 import com.chores.user.DTO.BalanceDTO;
 import com.chores.user.DTO.ChildDTO;
 import com.chores.user.DTO.SavingGoalDTO;
-import com.chores.user.model.Balance;
 import com.chores.user.model.Child;
-import com.chores.user.model.SavingGoal;
 import com.chores.user.service.ChildService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,19 +19,23 @@ public class ChildController {
 
     private final ChildService childService;
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<ChildDTO> findChildByUuid(@PathVariable UUID uuid) {
-        return childService.findChildByUuid(uuid)
-                .map(child -> new ResponseEntity<>(mapChildDTO(child), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
+    // Method to create a child
     @PostMapping
     public ResponseEntity<ChildDTO> createChild(@RequestBody ChildDTO childDTO) {
 
-        Child newChild = childService.createChild(mapChild(childDTO), childDTO.getParentId());
+        Child newChild = childService.createChild(mapToChild(childDTO), childDTO.getParentUuid());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ChildDTO(newChild.getChildUuid(), newChild.getChildName(), newChild.getParent().getParentUuid()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildDTO(newChild));
+    }
+
+
+
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<ChildDTO> findChildByUuid(@PathVariable UUID uuid) {
+        return childService.findChildByUuid(uuid)
+                .map(child -> new ResponseEntity<>(mapToChildDTO(child), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/balance/{childUuid}")
@@ -67,12 +69,15 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newSavingGoalDTO);
     }
 
+    // Mapping
 
-    private ChildDTO mapChildDTO(Child child) {
+    // Child -> ChildDTO
+    private ChildDTO mapToChildDTO(Child child) {
         return new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid());
     }
 
-    private Child mapChild(ChildDTO childDTO) {
+    // ChildDTO -> Child
+    private Child mapToChild(ChildDTO childDTO) {
         Child newChild = new Child();
         newChild.setChildUuid(childDTO.getChildUuid());
         newChild.setChildName(childDTO.getChildName());
