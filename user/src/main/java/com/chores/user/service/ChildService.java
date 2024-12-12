@@ -24,24 +24,39 @@ public class ChildService {
     private final RewardClient rewardClient;
     private final ParentRepository parentRepository;
 
+    // Method to create a child
+    public Child createChild(Child child, UUID parentUuid) {
+        // Check if child exists
+        return childRepository.findChildByUuid(child.getChildUuid())
+                // If not, create a child
+                .orElseGet(() -> doCreateChild(child, parentUuid));
+    }
+
+    private Child doCreateChild(Child child, UUID parentUuid) {
+        // Retrieve parent from the database
+        Parent parent = parentService.findParentByUuid(parentUuid).orElseThrow();
+
+        child.setParent(parent);
+
+        // Add the child to the parent's list of children
+        parent.getChildren().add(child);
+
+        // Create a balance for the child by calling the Reward service
+        rewardClient.createBalance(child.getChildUuid());
+
+        return childRepository.save(child);
+    }
+
+
+
+
+
     public Optional<Child> findChildByUuid(UUID childUuid) {
 
         return childRepository.findChildByUuid(childUuid);
     }
 
-    public Child createChild(Child child, UUID parentUuid) {
-        return childRepository.findChildByUuid(child.getChildUuid())
-                .orElseGet(() -> doCreateChild(child, parentUuid));
-    }
 
-    private Child doCreateChild(Child child, UUID parentUuid) {
-        Parent parent = parentService.findParentByUuid(parentUuid).orElseThrow();
-        child.setParent(parent);
-        parent.getChildren().add(child);
-
-        rewardClient.createBalance(child.getChildUuid());
-        return childRepository.save(child);
-    }
 
     public Optional<BalanceDTO> getBalance(UUID childUuid) {
         return rewardClient.getBalance(childUuid);

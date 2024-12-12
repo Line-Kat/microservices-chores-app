@@ -12,5 +12,5 @@ import java.util.UUID;
 public class ChildDTO {
     private UUID childUuid;
     private String childName;
-    private UUID parentId;
+    private UUID parentUuid;
 }
