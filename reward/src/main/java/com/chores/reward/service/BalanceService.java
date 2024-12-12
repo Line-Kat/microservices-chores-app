@@ -1,5 +1,6 @@
 package com.chores.reward.service;
 
+import com.chores.reward.DTO.ChangeInBalanceDTO;
 import com.chores.reward.DTO.ChildChoreDTO;
 import com.chores.reward.eventdriven.RewardEvent;
 import com.chores.reward.model.Balance;
@@ -39,13 +40,16 @@ public class BalanceService {
     }
 
     // Method for parent to update a child's chore
-    public Balance parentUpdateBalance(Balance balance) {
-        // Retrieve balance from the database, if it doesn't exist create a new balance
-        Balance tempBalance = balanceRepository.findBalanceByChildUuid(balance.getChildUuid())
-                .orElseGet(() -> {balance.setBalanceUuid(UUID.randomUUID());
-                return balance;});
+    public Balance parentUpdateBalance(UUID childUuid, int amount) {
 
-        tempBalance.setBalanceValue(balance.getBalanceValue());
+        // Retrieve balance from the database
+        Balance tempBalance = getBalance(childUuid)
+                .map(balance -> {
+                    int newValue = balance.getBalanceValue() + amount;
+                    balance.setBalanceValue(newValue);
+                    return balance;
+                })
+                .orElseThrow();
 
         return balanceRepository.save(tempBalance);
     }

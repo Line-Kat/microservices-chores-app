@@ -1,6 +1,7 @@
 package com.chores.user.controller;
 
 import com.chores.user.DTO.BalanceDTO;
+import com.chores.user.DTO.ChangeInBalanceDTO;
 import com.chores.user.DTO.ChildDTO;
 import com.chores.user.DTO.SavingGoalDTO;
 import com.chores.user.model.Child;
@@ -19,6 +20,8 @@ public class ChildController {
 
     private final ChildService childService;
 
+    // CHILD
+
     // Method to create a child
     @PostMapping
     public ResponseEntity<ChildDTO> createChild(@RequestBody ChildDTO childDTO) {
@@ -28,9 +31,7 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildDTO(newChild));
     }
 
-
-
-
+    // Method to get a child
     @GetMapping("/{uuid}")
     public ResponseEntity<ChildDTO> findChildByUuid(@PathVariable UUID uuid) {
         return childService.findChildByUuid(uuid)
@@ -38,12 +39,26 @@ public class ChildController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+
+    // BALANCE
+
+    // Method to get a child's balance
     @GetMapping("/balance/{childUuid}")
     public ResponseEntity<BalanceDTO> getBalance(@PathVariable UUID childUuid) {
         return childService.getBalance(childUuid)
                 .map(balanceDTO -> new ResponseEntity<>(balanceDTO, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    // Method for a parent to update a child's balance
+    @PutMapping("/balance/update")
+    public ResponseEntity<BalanceDTO> parentUpdateBalance(@RequestBody ChangeInBalanceDTO changeInBalanceDTO) {
+
+        BalanceDTO balanceDTO = childService.parentUpdateBalance(changeInBalanceDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(balanceDTO);
+    }
+
+
 
     @GetMapping("/goal/{childUuid}")
     public ResponseEntity<SavingGoalDTO> getSavingGoal(@PathVariable UUID childUuid) {
@@ -53,12 +68,7 @@ public class ChildController {
     }
 
 
-    @PutMapping("/balance/update")
-    public ResponseEntity<BalanceDTO> updateBalance(@RequestBody BalanceDTO balanceDTO) {
 
-        BalanceDTO newBalanceDTO = childService.parentUpdateBalance(balanceDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(newBalanceDTO);
-    }
 
     // Call from Postman/frontend
     @PostMapping("/goal")
@@ -84,6 +94,4 @@ public class ChildController {
 
         return newChild;
     }
-
-
 }
