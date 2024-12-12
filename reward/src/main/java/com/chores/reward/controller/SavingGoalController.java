@@ -17,7 +17,7 @@ public class SavingGoalController {
 
     private final SavingGoalService savingGoalService;
 
-    // Call from User
+    // Method to create a child's savingGoal
     @PostMapping
     public ResponseEntity<SavingGoalDTO> createSavingGoal(@RequestBody SavingGoalDTO savingGoalDTO) {
         SavingGoal savingGoal = savingGoalService.createSavingGoal(mapSavingGoal(savingGoalDTO));
@@ -25,6 +25,7 @@ public class SavingGoalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapSavingGoalDTO(savingGoal));
     }
 
+    // Method to get a child's saving goal
     @GetMapping("/{childUuid}")
     public ResponseEntity<SavingGoalDTO> getSavingGoal(@PathVariable UUID childUuid) {
         return savingGoalService.getSavingGoal(childUuid)
@@ -33,10 +34,13 @@ public class SavingGoalController {
     }
 
     // Mapping
+
+    // SavingGoal -> SavingGoalDTO
     private SavingGoalDTO mapSavingGoalDTO(SavingGoal savingGoal) {
         return new SavingGoalDTO(savingGoal.getSavingGoalUuid(), savingGoal.getChildUuid(), savingGoal.getSavingGoalName(), savingGoal.getSavingGoalValue());
     }
 
+    // SavingGoalDTO -> SavingGoal
     private SavingGoal mapSavingGoal(SavingGoalDTO savingGoalDTO) {
             SavingGoal savingGoal = new SavingGoal();
             savingGoal.setChildUuid(savingGoalDTO.getChildUuid());

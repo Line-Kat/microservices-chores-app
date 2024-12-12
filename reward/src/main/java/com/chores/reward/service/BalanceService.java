@@ -74,6 +74,6 @@ public class BalanceService {
         balanceRepository.save(balance);
 
         // Call the SavingGoalService
-        savingGoalService.updateSavingGoal(balance.getChildUuid(), (long) earnedValue);
+        savingGoalService.updateSavingGoal(childUuid, (long) earnedValue);
     }
 }

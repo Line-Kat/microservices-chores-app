@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface SavingGoalRepository extends JpaRepository<SavingGoal, Long> {
-    Optional<SavingGoal> getSavingGoalByChildUuid(UUID childUuid);
+    Optional<SavingGoal> findSavingGoalByChildUuid(UUID childUuid);
 
 }

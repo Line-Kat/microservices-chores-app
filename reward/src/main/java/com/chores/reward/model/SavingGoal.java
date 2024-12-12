@@ -13,7 +13,7 @@ import java.util.UUID;
 @ToString
 @Table(name = "saving_goal")
 
-@NamedQuery(name = "SavingGoal.findSavingGoalByChildUuid", query = "select c from Balance c where c.childUuid = ?1")
+@NamedQuery(name = "SavingGoal.findSavingGoalByChildUuid", query = "select s from SavingGoal s where s.childUuid = ?1")
 public class SavingGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

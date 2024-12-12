@@ -11,10 +11,9 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
 
-// configure this to work with JSON
 @Configuration
 public class AMQPConfiguration {
-    // exchanges
+    // Exchange
     @Bean
     public TopicExchange rewardTopicExchange(
             @Value("${amqp.exchange.name}") final String exchangeName
@@ -25,7 +24,7 @@ public class AMQPConfiguration {
                 .build();
     }
 
-    // bindings
+    // Binding
     @Bean
     public Binding choreCompleteBinding(
             final Queue queue,
@@ -36,7 +35,7 @@ public class AMQPConfiguration {
                 .with("chore.completed"); // RoutingKey
     }
 
-    //queues - where the messages are read from
+    // Queue
     @Bean
     public Queue rewardQueue(
             @Value("${amqp.queue.name}") final String queueName
