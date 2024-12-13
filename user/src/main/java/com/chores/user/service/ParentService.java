@@ -1,5 +1,6 @@
 package com.chores.user.service;
 
+import com.chores.user.model.Child;
 import com.chores.user.model.Parent;
 import com.chores.user.repository.ParentRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,13 @@ public class ParentService{
 
     // Method to create parent
     public Parent createParent(Parent parent) {
+        // Check if parent exists
+        return parentRepository.findByParentUuid(parent.getParentUuid())
+                // If not, create parent
+                .orElseGet(() -> doCreateParen(parent));
+    }
+
+    private Parent doCreateParen(Parent parent) {
         return parentRepository.save(parent);
     }
 
