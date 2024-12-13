@@ -17,6 +17,13 @@ public class ChoresService {
 
     // Method to add a chore to the database
     public Chore createChore(Chore chore) {
+        // Check if chore exists
+        return choresRepository.findChoreByUuid(chore.getChoreUuid())
+                // If not, create chore
+                .orElseGet(() -> doCreateChore(chore));
+    }
+
+    private Chore doCreateChore(Chore chore) {
         return choresRepository.save(chore);
     }
 
