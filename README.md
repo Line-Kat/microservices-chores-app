@@ -2,7 +2,7 @@
 ### Build
 First package the services using Maven </br>
 Run `mvn clean package -DskipTests` in the root folder of the project </br>
-I have used 'docker build' to build the images </br></br>
+I have used 'docker build' to build the images for every service </br></br>
 To build all the images run `./build_docker.sh` in the root folder of the project </br></br>
 **A table with tags for the different services** </br>
 
@@ -26,10 +26,13 @@ earning their own money. Chores can be vacuuming, cleaning their room, taking ou
 walking the dog, etc. A parent creates an account and can create several child profiles. It’s 
 the parent that manages which chores are on the child's profile. A child has its own profile 
 where today’s chores and balance is shown. When a chore is done, the child can mark it as 
-completed. When all the chores for a day are marked as done, an amount of money is added to 
+completed. When all the chores for a day are marked as completed, an amount of money is added to 
 the child’s balance. In addition, the child can create a saving goal and as they earn money, 
 they will see the remaining amount needed to reach their goal decrease. This might help keep the 
 child’s motivation up to continue doing chores in addition to learning about economics.
+
+- parent is presented with a list of chores to choose from when adding a chore to a child. 
+- A parent can add a chore to the DB
 
 ### The services
 - ### gateway
@@ -85,7 +88,4 @@ to complete the chore
 so that the balance is correct
 
 ## Architecture diagram
-- services
-  - domains
-  - functions
-- async/sync communication
+![Architecture diagram](architecture_diagram.jpg)

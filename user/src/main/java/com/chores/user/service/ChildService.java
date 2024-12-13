@@ -67,15 +67,15 @@ public class ChildService {
         return rewardClient.parentUpdateBalance(changeInBalance);
     }
 
-    public Optional<SavingGoalDTO> getSavingGoal(UUID childUuid) {
-        return rewardClient.getSavingGoal(childUuid);
-    }
+    // SAVING GOAL
 
+    // Method to create a child's saving goal
     public SavingGoalDTO createSavingGoal(SavingGoalDTO savingGoalDTO) {
         return rewardClient.createSavingGoal(savingGoalDTO);
     }
 
-
-
-
+    //Method to get a child's saving goal
+    public Optional<SavingGoalDTO> getSavingGoal(UUID childUuid) {
+        return rewardClient.getSavingGoal(childUuid);
+    }
 }

@@ -58,25 +58,23 @@ public class ChildController {
         return ResponseEntity.status(HttpStatus.OK).body(balanceDTO);
     }
 
+    // SAVING GOAL
 
-
-    @GetMapping("/goal/{childUuid}")
-    public ResponseEntity<SavingGoalDTO> getSavingGoal(@PathVariable UUID childUuid) {
-        return childService.getSavingGoal(childUuid)
-                .map(savingGoalDTO -> new ResponseEntity<>(savingGoalDTO, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-
-
-
-    // Call from Postman/frontend
+    // Method to create a child's saving goal
     @PostMapping("/goal")
     public ResponseEntity<SavingGoalDTO> createSavingGoal(@RequestBody SavingGoalDTO savingGoalDTO) {
 
         SavingGoalDTO newSavingGoalDTO = childService.createSavingGoal(savingGoalDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newSavingGoalDTO);
+    }
+
+    //Method to get a child's saving goal
+    @GetMapping("/goal/{childUuid}")
+    public ResponseEntity<SavingGoalDTO> getSavingGoal(@PathVariable UUID childUuid) {
+        return childService.getSavingGoal(childUuid)
+                .map(savingGoalDTO -> new ResponseEntity<>(savingGoalDTO, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     // Mapping

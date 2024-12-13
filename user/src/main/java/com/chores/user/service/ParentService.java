@@ -14,12 +14,13 @@ public class ParentService{
 
     private final ParentRepository parentRepository;
 
-    public Optional<Parent> findParentByUuid(UUID parentUuid) {
-        return parentRepository.findByParentUuid(parentUuid);
-    }
-
+    // Method to create parent
     public Parent createParent(Parent parent) {
         return parentRepository.save(parent);
     }
-}
 
+    // Method to find a parent
+    public Optional<Parent> findParentByUuid(UUID parentUuid) {
+        return parentRepository.findByParentUuid(parentUuid);
+    }
+}

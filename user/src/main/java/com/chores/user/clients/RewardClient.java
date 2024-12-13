@@ -18,12 +18,9 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class RewardClient {
-    // A service that calls another service
+    // Calls the service Reward
 
-    // Endpoint, where to call, where the service live
     private final String restServiceUrl;
-
-    // Remote call (build an HTTP and get a response back)
     private final RestTemplate restTemplate;
 
     public RewardClient(
@@ -33,11 +30,11 @@ public class RewardClient {
         this.restServiceUrl = restServiceUrl;
     }
 
-    // This Reward comes from the Reward service
-    // Need to call this function to get a child's balance
+    // BALANCE
+
+    // Method to create a child's balance
     public BalanceDTO createBalance(UUID childUuid) {
         String url = restServiceUrl + "/reward/balance";
-
         ResponseEntity<BalanceDTO> response;
 
         try {
@@ -51,9 +48,9 @@ public class RewardClient {
         return response.getBody();
     }
 
+    // Method to get a child's balance
     public Optional<BalanceDTO> getBalance(UUID childUuid) {
         String url = restServiceUrl + "/reward/balance/" + childUuid;
-
         ResponseEntity<BalanceDTO> response;
 
         try {
@@ -64,28 +61,27 @@ public class RewardClient {
         }
 
         return Optional.ofNullable(response.getBody());
-
-        // return response.getBody();
     }
 
-    public Optional<SavingGoalDTO> getSavingGoal(UUID childUuid) {
-        String url = restServiceUrl + "/reward/goal/" + childUuid;
-
-        ResponseEntity<SavingGoalDTO> response;
+    // Method for parent to update a child's balance
+    public BalanceDTO parentUpdateBalance(ChangeInBalanceDTO changeInBalanceDTO) {
+        String url = restServiceUrl + "/reward/balance/update";
+        ResponseEntity<BalanceDTO> response;
 
         try {
-            response = restTemplate.getForEntity(url, SavingGoalDTO.class);
+            response = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(changeInBalanceDTO), BalanceDTO.class);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Optional.empty();
+            return null;
         }
-
-        return Optional.ofNullable(response.getBody());
+        return response.getBody();
     }
 
+    // SAVING GOAL
+
+    // Method to create a child's saving goal
     public SavingGoalDTO createSavingGoal(SavingGoalDTO savingGoalDTO) {
         String url = restServiceUrl + "/reward/goal";
-
         ResponseEntity<SavingGoalDTO> response;
 
         try {
@@ -103,16 +99,18 @@ public class RewardClient {
         return response.getBody();
     }
 
-    public BalanceDTO parentUpdateBalance(ChangeInBalanceDTO changeInBalanceDTO) {
-        String url = restServiceUrl + "/reward/balance/update";
-        ResponseEntity<BalanceDTO> response;
+    // Method to get a child's saving goal
+    public Optional<SavingGoalDTO> getSavingGoal(UUID childUuid) {
+        String url = restServiceUrl + "/reward/goal/" + childUuid;
+        ResponseEntity<SavingGoalDTO> response;
 
         try {
-            response = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(changeInBalanceDTO), BalanceDTO.class);
+            response = restTemplate.getForEntity(url, SavingGoalDTO.class);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return null;
+            return Optional.empty();
         }
-        return response.getBody();
+
+        return Optional.ofNullable(response.getBody());
     }
 }

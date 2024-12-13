@@ -13,9 +13,7 @@ public class RewardEventHandler {
     @RabbitListener(
             queues = "chore.completed"
     )
-    void handleRewardEvent(
-            RewardEvent message
-    ) {
+    void handleRewardEvent(RewardEvent message) {
         balanceService.updateBalance(message);
     }
 }
