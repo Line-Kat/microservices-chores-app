@@ -24,6 +24,13 @@ public class ChildChoreService {
 
     // Method to add a chore to a child (create a ChildChore object)
     public ChildChore addChoreToChild(ChildChore childChore) {
+        // Check if childChore exists
+        return childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid())
+                // If not create childChore
+                .orElseGet(() -> doCreateChildChore(childChore));
+    }
+
+    private ChildChore doCreateChildChore(ChildChore childChore) {
         return childChoreRepository.save(childChore);
     }
 
