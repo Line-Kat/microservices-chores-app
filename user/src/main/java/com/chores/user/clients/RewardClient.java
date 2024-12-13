@@ -87,6 +87,7 @@ public class RewardClient {
         try {
             SavingGoalDTO requestBody = new SavingGoalDTO();
             requestBody.setChildUuid(savingGoalDTO.getChildUuid());
+            requestBody.setSavingGoalUuid(savingGoalDTO.getSavingGoalUuid());
             requestBody.setSavingGoalName(savingGoalDTO.getSavingGoalName());
             requestBody.setSavingGoalValue(savingGoalDTO.getSavingGoalValue());
 
