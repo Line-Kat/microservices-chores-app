@@ -36,8 +36,10 @@ public class ChoreController {
 
     // Method to retrieve all the chores in the database
     @GetMapping("/allchores")
-    public List<Chore> getAllChores() {
-        return choresService.getChores();
+    public ResponseEntity<List<ChoreDTO>> getAllChores() {
+        return choresService.getChores()
+                .map(chores -> new ResponseEntity<>(mapToListOfChoreDTO(chores), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     // Mapping
@@ -58,5 +60,13 @@ public class ChoreController {
         choreDTO.setChoreUuid(chore.getChoreUuid());
 
         return choreDTO;
+    }
+
+    // List<Chore> -> List<ChoreDTO>
+    private List<ChoreDTO> mapToListOfChoreDTO(List<Chore> listOfChore) {
+        return listOfChore
+                .stream()
+                .map(chore -> new ChoreDTO(chore.getChoreUuid(), chore.getChoreName()))
+                .toList();
     }
 }

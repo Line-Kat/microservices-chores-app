@@ -15,6 +15,8 @@ import java.util.UUID;
 @Setter
 @Table(name = "chore")
 @NamedQuery(name = "Chore.findChoreByUuid", query = "select c from Chore c where c.choreUuid = ?1")
+@NamedQuery(name = "Chore.findAllChores", query = "select c from Chore c")
+
 public class Chore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

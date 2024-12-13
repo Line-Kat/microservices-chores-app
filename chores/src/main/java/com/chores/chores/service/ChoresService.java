@@ -26,7 +26,7 @@ public class ChoresService {
     }
 
     // Method to get all chores
-    public List<Chore> getChores() {
-        return choresRepository.findAll();
+    public Optional<List<Chore>> getChores() {
+        return choresRepository.findAllChores();
     }
 }

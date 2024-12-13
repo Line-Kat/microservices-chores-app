@@ -46,13 +46,15 @@ public class ChildChoreController {
     public ResponseEntity<ChildChoreDTO> updateChildChore(@PathVariable String field, @RequestBody ChildChoreDTO childChoreDTO) {
         ChildChore childChore = childChoreService.updateChildChore(mapToChildChore(childChoreDTO), field);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
+        return ResponseEntity.status(HttpStatus.OK).body(mapToChildChoreDTO(childChore));
     }
 
     // Method to delete a chore from a child
     @DeleteMapping("/remove")
-    public void deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
+    public ResponseEntity<Void> deleteChildChore(@RequestBody ChildChoreDTO childChoreDTO) {
         childChoreService.deleteChildChore(mapToChildChore(childChoreDTO));
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Mapping methods

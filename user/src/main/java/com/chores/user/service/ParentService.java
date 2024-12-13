@@ -1,6 +1,5 @@
 package com.chores.user.service;
 
-import com.chores.user.model.Child;
 import com.chores.user.model.Parent;
 import com.chores.user.repository.ParentRepository;
 import lombok.RequiredArgsConstructor;
