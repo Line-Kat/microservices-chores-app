@@ -6,7 +6,6 @@ import com.chores.user.model.Child;
 import com.chores.user.model.Parent;
 import com.chores.user.service.ParentService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,29 +16,33 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/parent")
 @RequiredArgsConstructor
-@Slf4j
 public class ParentController {
 
     private final ParentService parentService;
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<ParentDTO> findParentByUuid(@PathVariable UUID uuid) {
-        return parentService.findParentByUuid(uuid)
-                .map(parent -> new ResponseEntity<>(mapParentDTO(parent), HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
+    // Method to create a parent
     @PostMapping
     public Parent createParent(@RequestBody Parent parent) {
         return parentService.createParent(parent);
     }
 
-    // Mapping
-    private ParentDTO mapParentDTO(Parent parent) {
-        return new ParentDTO(parent.getParentUuid(), parent.getParentName(), mapListOfChildDTO(parent.getChildren()));
+    // Method to find a parent
+    @GetMapping("/{parentUuid}")
+    public ResponseEntity<ParentDTO> findParentByUuid(@PathVariable UUID parentUuid) {
+        return parentService.findParentByUuid(parentUuid)
+                .map(parent -> new ResponseEntity<>(mapToParentDTO(parent), HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    private List<ChildDTO> mapListOfChildDTO(List<Child> listOfChild) {
+    // Mapping
+
+    // Parent -> ParentDTO
+    private ParentDTO mapToParentDTO(Parent parent) {
+        return new ParentDTO(parent.getParentUuid(), parent.getParentName(), mapToListOfChildDTO(parent.getChildren()));
+    }
+
+    // List<Child> -> List<ChildDTO>
+    private List<ChildDTO> mapToListOfChildDTO(List<Child> listOfChild) {
         return listOfChild
                 .stream()
                 .map(child -> new ChildDTO(child.getChildUuid(), child.getChildName(), child.getParent().getParentUuid()))

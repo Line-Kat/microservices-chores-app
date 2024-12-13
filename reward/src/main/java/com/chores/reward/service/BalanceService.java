@@ -1,6 +1,5 @@
 package com.chores.reward.service;
 
-import com.chores.reward.DTO.ChangeInBalanceDTO;
 import com.chores.reward.DTO.ChildChoreDTO;
 import com.chores.reward.eventdriven.RewardEvent;
 import com.chores.reward.model.Balance;
@@ -42,8 +41,8 @@ public class BalanceService {
     // Method for parent to update a child's chore
     public Balance parentUpdateBalance(UUID childUuid, int amount) {
 
-        // Retrieve balance from the database
-        Balance tempBalance = getBalance(childUuid)
+        // Retrieve balance from the database and setting the new value
+        Balance newBalance = getBalance(childUuid)
                 .map(balance -> {
                     int newValue = balance.getBalanceValue() + amount;
                     balance.setBalanceValue(newValue);
@@ -51,7 +50,7 @@ public class BalanceService {
                 })
                 .orElseThrow();
 
-        return balanceRepository.save(tempBalance);
+        return balanceRepository.save(newBalance);
     }
 
     // Method for updating a child's balance based on a message received from RabbitMQ
