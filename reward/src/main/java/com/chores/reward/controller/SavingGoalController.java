@@ -43,6 +43,7 @@ public class SavingGoalController {
     // SavingGoalDTO -> SavingGoal
     private SavingGoal mapSavingGoal(SavingGoalDTO savingGoalDTO) {
             SavingGoal savingGoal = new SavingGoal();
+            savingGoal.setSavingGoalUuid(savingGoalDTO.getSavingGoalUuid());
             savingGoal.setChildUuid(savingGoalDTO.getChildUuid());
             savingGoal.setSavingGoalName(savingGoalDTO.getSavingGoalName());
             savingGoal.setSavingGoalValue(savingGoalDTO.getSavingGoalValue());

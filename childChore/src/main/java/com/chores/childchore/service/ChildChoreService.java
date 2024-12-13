@@ -26,7 +26,7 @@ public class ChildChoreService {
     public ChildChore addChoreToChild(ChildChore childChore) {
         // Check if childChore exists
         return childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid())
-                // If not create childChore
+                // If not, create childChore
                 .orElseGet(() -> doCreateChildChore(childChore));
     }
 

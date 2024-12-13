@@ -15,8 +15,13 @@ public class SavingGoalService {
 
     // Method to create a child's saving goal
     public SavingGoal createSavingGoal(SavingGoal savingGoal) {
-        savingGoal.setSavingGoalUuid(savingGoal.getChildUuid());
+        // Check if saving goal exists
+        return savingGoalRepository.findSavingGoalByChildUuid(savingGoal.getChildUuid())
+                // If not, create a saving goal
+                .orElseGet(() -> doCreateSavingGoal(savingGoal));
+    }
 
+    private SavingGoal doCreateSavingGoal(SavingGoal savingGoal) {
         return savingGoalRepository.save(savingGoal);
     }
 
