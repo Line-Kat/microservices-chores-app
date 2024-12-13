@@ -1,0 +1,608 @@
+{
+	"info": {
+		"_postman_id": "a3ef7967-bbdc-4e6e-b0e6-9f78625ec35e",
+		"name": "chores",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40140973"
+	},
+	"item": [
+		{
+			"name": "Create parent",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"parentUuid\" : \"a325dad1-723b-457c-94e2-1c3b730a06a5\",\r\n    \"parentName\":\"Reidar\",\r\n    \"children\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/parent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"parent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get parent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/parent/a325dad1-723b-457c-94e2-1c3b730a06a5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"parent",
+						"a325dad1-723b-457c-94e2-1c3b730a06a5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add child to parent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childUuid\" : \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"childName\":\"Petra\",\r\n    \"parentUuid\" : \"a325dad1-723b-457c-94e2-1c3b730a06a5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/child",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"child"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a child's balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/child/balance/a325dad1-723b-457c-94e2-5c3b7e0a06ab",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"child",
+						"balance",
+						"a325dad1-723b-457c-94e2-5c3b7e0a06ab"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add second child to parent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childUuid\" : \"46d0b0ba-98fb-4f5b-880f-2b6d8e00b7ff\",\r\n    \"childName\":\"Kristian\",\r\n    \"parentUuid\" : \"a325dad1-723b-457c-94e2-1c3b730a06a5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/child",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"child"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add chore 1 to database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"choreUuid\": \"a325dad1-723b-457c-94e2-1c3b730a06a8\",\r\n    \"choreName\": \"Vacuum\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/chore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add chore 2 to database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"choreUuid\": \"e7fbb6dc-7e14-4e0f-9ba3-bc9f741e8727\",\r\n    \"choreName\": \"Take out the trash\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/chore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add chore 3 to database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"choreUuid\": \"7d6f9b22-925c-4b85-81b2-a1b9b86d4f3b\",\r\n    \"choreName\": \"Clean your room\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/chore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all chores from the database",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/chore/allchores",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chore",
+						"allchores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add chore 1 to child",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"d2fcb30a-7a9d-4bf9-84d9-8545d8cf3681\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"a325dad1-723b-457c-94e2-1c3b730a06a8\",\r\n    \"date\": \"2024-12-10T14:34:56.000+00:00\",\r\n    \"status\": \"NEW\",\r\n    \"value\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/addchore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"addchore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add chore 2 to child (with today's date)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"pm.environment.set('currentDate', moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"6dbf0b1d-97d5-4a47-9263-d91bc5a4b882\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"e7fbb6dc-7e14-4e0f-9ba3-bc9f741e8727\",\r\n    \"date\": \"{{currentDate}}\",\r\n    \"status\": \"NEW\",\r\n    \"value\": 50\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/addchore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"addchore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add chore 3 to child (with today's date)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"pm.environment.set('currentDate', moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"cf9a3d8b-e6f9-4a79-b8eb-5d7b5a2b351d\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"7d6f9b22-925c-4b85-81b2-a1b9b86d4f3b\",\r\n    \"date\": \"{{currentDate}}\",\r\n    \"status\": \"NEW\",\r\n    \"value\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/addchore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"addchore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a saving goal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"savingGoalUuid\": \"cd3e42ea-8fc2-4e94-9297-5f7b1b62f994\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"savingGoalName\": \"Doll\",\r\n    \"savingGoalValue\": 399\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/child/goal",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"child",
+						"goal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a child's saving goal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/child/goal/a325dad1-723b-457c-94e2-5c3b7e0a06ab",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"child",
+						"goal",
+						"a325dad1-723b-457c-94e2-5c3b7e0a06ab"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the date of a child's chore 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"d2fcb30a-7a9d-4bf9-84d9-8545d8cf3681\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"a325dad1-723b-457c-94e2-1c3b730a06a8\",\r\n    \"date\": \"2024-12-22T14:34:56.000+00:00\",\r\n    \"status\": \"NEW\",\r\n    \"value\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/update/date",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"update",
+						"date"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the value of a child's chore 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"d2fcb30a-7a9d-4bf9-84d9-8545d8cf3681\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"a325dad1-723b-457c-94e2-1c3b730a06a8\",\r\n    \"date\": \"2024-12-10T14:34:56.000+00:00\",\r\n    \"status\": \"NEW\",\r\n    \"value\": 70\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/update/value",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"update",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the status of a child's chore 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"pm.environment.set('currentDate', moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"cf9a3d8b-e6f9-4a79-b8eb-5d7b5a2b351d\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"7d6f9b22-925c-4b85-81b2-a1b9b86d4f3b\",\r\n    \"date\": \"{{currentDate}}\",\r\n    \"status\": \"COMPLETED\",\r\n    \"value\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/update/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"update",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete chore 2 from child",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childChoreUuid\":\"6dbf0b1d-97d5-4a47-9263-d91bc5a4b882\",\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"choreUuid\": \"e7fbb6dc-7e14-4e0f-9ba3-bc9f741e8727\",\r\n    \"date\": \"2024-12-22T14:34:56.000+00:00\",\r\n    \"status\": \"NEW\",\r\n    \"value\": 50\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/childchore/remove",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of a child's chores today",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/childchore/a325dad1-723b-457c-94e2-5c3b7e0a06ab",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"childchore",
+						"a325dad1-723b-457c-94e2-5c3b7e0a06ab"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parent update a child's balance",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"childUuid\": \"a325dad1-723b-457c-94e2-5c3b7e0a06ab\",\r\n    \"amount\": -5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/child/balance/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"child",
+						"balance",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
