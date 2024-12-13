@@ -35,7 +35,7 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 `docker-compose up`
 
 ### Run
-This project only has a backend, so to test it use Postman.
+This project includes only a backend. To test it, please use Postman.
 
 #### Import Collection
 1. Open Postman and go to the Collections tab
@@ -87,21 +87,29 @@ it to adapt to changes in real time and maintain seamless communication between 
 This service exports configurations to Consul, then terminates.
 
 - ### user
-The service has the responsibility for managing the user profiles.
+The service has the responsibility for managing the user profiles.</br>
+The service has its own database with the tables
+- parent
+- child
 
 - ### reward
 This service is responsible for creating, storing, and updating a child's balance and saving goal. The Rewards 
 component listens to RabbitMQ for messages containing a child's list of completed chores for the day and subsequently 
-updates the balance and saving goal.
+updates the balance and saving goal.</br>
+The service has its own database with the tables
+- balance
+- saving_goal
 
 - ### chores
-The service has the responsibility for creating and storing chores from a database. 
+The service has the responsibility for creating and storing chores from a database.</br> 
+The service has its own database with the table chore
 
 - ### childChore
 The service has the responsibility for managing the child’s chores and to check the 
 status of the child’s chores of the day. If all the chores of the day are completed, the 
 ChildChore service sends a message to RabbitMQ containing the child’s chores of the 
-day.
+day.</br>
+The service has its own database with the table child_chore
 
 ## User stories
 ### MVP
