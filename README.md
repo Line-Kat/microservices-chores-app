@@ -75,7 +75,7 @@ This project includes only a backend. To test it, please use Postman.
 ### The services
 - ### gateway
 The gateway serves as an important intermediary, efficiently routing requests between clients and backend services
-(User, ChildChore and Chores. Its primary function is to direct incoming requests to the appropriate backend service, ensuring 
+(User, ChildChore and Chores). Its primary function is to direct incoming requests to the appropriate backend service, ensuring 
 that each request reaches its intended destination. Additionally, the gateway manages traffic distribution across multiple 
 service instances, balancing the load to improve performance and reliability, while preventing any single instance from 
 becoming overwhelmed.</br></br>
