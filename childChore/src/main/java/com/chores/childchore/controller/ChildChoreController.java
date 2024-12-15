@@ -1,10 +1,12 @@
 package com.chores.childchore.controller;
 
+import com.chores.childchore.ChoreNotFoundException;
 import com.chores.childchore.DTO.ChildChoreDTO;
 import com.chores.childchore.DTO.ChildChoreDateDTO;
 import com.chores.childchore.model.ChildChore;
 import com.chores.childchore.service.ChildChoreService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/childchore")
 @RequiredArgsConstructor
@@ -26,10 +29,16 @@ public class ChildChoreController {
     // Method to add a chore to a child
     @PostMapping("/addchore")
     public ResponseEntity<ChildChoreDTO> addChoreToChild(@RequestBody ChildChoreDTO childChoreDTO) {
-        // Create the childChore object
-        ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
+        try{
+            // Create the childChore object
+            ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
+            return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
+        } catch (ChoreNotFoundException e) {
+            log.info("Could not add chore to child: ", e);
+            // Return a BAD_REQUEST response if an exception occurs
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     // Method to return a child's list of today's chores
