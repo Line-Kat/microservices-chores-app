@@ -1,5 +1,6 @@
 package com.chores.childchore.controller;
 
+import com.chores.childchore.ChoreNotFoundException;
 import com.chores.childchore.DTO.ChildChoreDTO;
 import com.chores.childchore.DTO.ChildChoreDateDTO;
 import com.chores.childchore.model.ChildChore;
@@ -33,8 +34,8 @@ public class ChildChoreController {
             ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
 
             return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
-        } catch (Exception e) {
-            log.error("Error adding chore to child: ", e);
+        } catch (ChoreNotFoundException e) {
+            log.info("Could not add chore to child: ", e);
             // Return a BAD_REQUEST response if an exception occurs
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

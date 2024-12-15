@@ -1,5 +1,6 @@
 package com.chores.childchore.service;
 
+import com.chores.childchore.ChoreNotFoundException;
 import com.chores.childchore.DTO.ChildChoreDTO;
 import com.chores.childchore.DTO.ChildChoreDateDTO;
 import com.chores.childchore.clients.ChoresClient;
@@ -9,7 +10,6 @@ import com.chores.childchore.model.ChildChoreStatus;
 import com.chores.childchore.repository.ChildChoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @ToString
@@ -29,14 +28,12 @@ public class ChildChoreService {
     // Method to add a chore to a child (create a ChildChore object)
     public ChildChore addChoreToChild(ChildChore childChore) {
         //Validate that the chore exists in the Chores database
-        if(choresClient.validateChore(childChore.getChoreUuid()) != null) {
-            // Check if childChore exists
-            return childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid())
-                    // If not, create childChore
-                    .orElseGet(() -> doCreateChildChore(childChore));
-        }else{
-            throw new RuntimeException("Invalid chore UUID: " + childChore.getChoreUuid());
-        }
+        return choresClient.getChore(childChore.getChoreUuid())
+                .map(choreDTO ->
+                        childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid())
+                                // If not, create childChore
+                                .orElseGet(() -> doCreateChildChore(childChore)))
+                .orElseThrow(() -> new ChoreNotFoundException("Invalid chore UUID: " + childChore.getChoreUuid()));
     }
 
     private ChildChore doCreateChildChore(ChildChore childChore) {
@@ -64,10 +61,10 @@ public class ChildChoreService {
             }
             case "date" ->
                 // Change the date of the childChore
-                tempChildChore.setDate(childChore.getDate());
+                    tempChildChore.setDate(childChore.getDate());
             case "value" ->
                 // Change the value of the childChore
-                tempChildChore.setValue(childChore.getValue());
+                    tempChildChore.setValue(childChore.getValue());
         }
 
         return childChoreRepository.save(tempChildChore);

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -26,17 +27,17 @@ public class ChoresClient {
         this.restServiceUrl = restServiceUrl;
     }
 
-    // Method to validate that the chosen chore is in the Chores database
-    public ChoreDTO validateChore(UUID choreUuid) {
+    // Method to get a chore from the service chore if it exits
+    public Optional<ChoreDTO> getChore(UUID choreUuid) {
         String url = restServiceUrl + "/chore/" + choreUuid;
         ResponseEntity<ChoreDTO> response;
 
         try {
             response = restTemplate.getForEntity(url, ChoreDTO.class);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
+            log.error("Could not get chore: ", e);
+            return Optional.empty();
         }
-        return response.getBody();
+        return Optional.ofNullable(response.getBody());
     }
 }
