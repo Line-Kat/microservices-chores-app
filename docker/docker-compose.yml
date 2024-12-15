@@ -8,7 +8,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
-      - ROUND_CLIENT_HOST=http://reward:8084
+      - REWARD_CLIENT_HOST=http://reward:8084
     depends_on:
       - consul-importer
       - reward
