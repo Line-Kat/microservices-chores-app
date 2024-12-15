@@ -5,6 +5,7 @@ import com.chores.childchore.DTO.ChildChoreDateDTO;
 import com.chores.childchore.model.ChildChore;
 import com.chores.childchore.service.ChildChoreService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/childchore")
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class ChildChoreController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
         } catch (Exception e) {
+            log.error("Error adding chore to child: ", e);
             // Return a BAD_REQUEST response if an exception occurs
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

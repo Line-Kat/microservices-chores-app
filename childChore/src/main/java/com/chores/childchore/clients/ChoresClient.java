@@ -21,20 +21,18 @@ public class ChoresClient {
 
     public ChoresClient(
             RestTemplateBuilder restTemplateBuilder,
-            @Value("${chores.client.host}") final String restServiceUrl) {
+            @Value("${chores.service.url}") final String restServiceUrl) {
         this.restTemplate = restTemplateBuilder.build();
         this.restServiceUrl = restServiceUrl;
     }
 
     // Method to validate that the chosen chore is in the Chores database
     public ChoreDTO validateChore(UUID choreUuid) {
-        String url = restServiceUrl + "/{choreUuid}";
+        String url = restServiceUrl + "/chore/" + choreUuid;
         ResponseEntity<ChoreDTO> response;
 
         try {
-            ChoreDTO requestBody = new ChoreDTO();
-            requestBody.setChoreUuid(choreUuid);
-            response = restTemplate.postForEntity(url, requestBody, ChoreDTO.class);
+            response = restTemplate.getForEntity(url, ChoreDTO.class);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
