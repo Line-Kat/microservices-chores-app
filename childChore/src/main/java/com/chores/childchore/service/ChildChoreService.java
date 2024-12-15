@@ -2,12 +2,14 @@ package com.chores.childchore.service;
 
 import com.chores.childchore.DTO.ChildChoreDTO;
 import com.chores.childchore.DTO.ChildChoreDateDTO;
+import com.chores.childchore.clients.ChoresClient;
 import com.chores.childchore.eventdriven.RewardEventPublisher;
 import com.chores.childchore.model.ChildChore;
 import com.chores.childchore.model.ChildChoreStatus;
 import com.chores.childchore.repository.ChildChoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -15,19 +17,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @ToString
 public class ChildChoreService {
     private final RewardEventPublisher rewardEventPublisher;
     private final ChildChoreRepository childChoreRepository;
+    private final ChoresClient choresClient;
 
     // Method to add a chore to a child (create a ChildChore object)
     public ChildChore addChoreToChild(ChildChore childChore) {
-        // Check if childChore exists
-        return childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid())
-                // If not, create childChore
-                .orElseGet(() -> doCreateChildChore(childChore));
+        //Validate that the chore exists in the Chores database
+        if(choresClient.validateChore(childChore.getChoreUuid()) != null) {
+            // Check if childChore exists
+            return childChoreRepository.findChildChoreByUuid(childChore.getChildChoreUuid())
+                    // If not, create childChore
+                    .orElseGet(() -> doCreateChildChore(childChore));
+        }else{
+            throw new RuntimeException("Invalid chore UUID: " + childChore.getChoreUuid());
+        }
     }
 
     private ChildChore doCreateChildChore(ChildChore childChore) {
@@ -101,6 +110,8 @@ public class ChildChoreService {
     }
 
     // Mapping
+
+    // ChildChore -> ChildChore DTO
     private ChildChoreDTO mapToChildChoreDTO(ChildChore childChore) {
         return new ChildChoreDTO(childChore.getChildChoreUuid(), childChore.getChildUuid(), childChore.getChoreUuid(), childChore.getDate(), childChore.getStatus(), childChore.getValue());
     }

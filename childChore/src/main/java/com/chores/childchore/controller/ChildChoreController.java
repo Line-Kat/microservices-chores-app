@@ -26,10 +26,15 @@ public class ChildChoreController {
     // Method to add a chore to a child
     @PostMapping("/addchore")
     public ResponseEntity<ChildChoreDTO> addChoreToChild(@RequestBody ChildChoreDTO childChoreDTO) {
-        // Create the childChore object
-        ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
+        try{
+            // Create the childChore object
+            ChildChore childChore = childChoreService.addChoreToChild(mapToChildChore(childChoreDTO));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
+            return ResponseEntity.status(HttpStatus.CREATED).body(mapToChildChoreDTO(childChore));
+        } catch (Exception e) {
+            // Return a BAD_REQUEST response if an exception occurs
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     // Method to return a child's list of today's chores

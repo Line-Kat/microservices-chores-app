@@ -25,7 +25,7 @@ public class RewardClient {
 
     public RewardClient(
             RestTemplateBuilder restTemplateBuilder,
-            @Value("${round.client.host}") final String restServiceUrl) {
+            @Value("${reward.client.host}") final String restServiceUrl) {
         this.restTemplate = restTemplateBuilder.build();
         this.restServiceUrl = restServiceUrl;
     }
