@@ -87,7 +87,7 @@ it to adapt to changes in real time and maintain seamless communication between 
 This service exports configurations to Consul, then terminates.
 
 - ### user
-The service has the responsibility for managing the user profiles.</br>
+The service is responsible for managing the user profiles.</br>
 The service has its own database with the tables
 - parent
 - child
@@ -101,14 +101,15 @@ The service has its own database with the tables
 - saving_goal
 
 - ### chores
-The service has the responsibility for creating and storing chores from a database.</br> 
+The service is responsible for creating, storing, and retrieving chores from the database.</br> 
 The service has its own database with the table chore
 
 - ### childChore
-The service has the responsibility for managing the child’s chores and to check the 
+The service is responsible for managing the child’s chores and to check the 
 status of the child’s chores of the day. If all the chores of the day are completed, the 
 ChildChore service sends a message to RabbitMQ containing the child’s chores of the 
-day.</br>
+day. When a chore is added to a child, a call is made to the Chores service to validate whether the chore 
+exists in the database.</br>
 The service has its own database with the table child_chore
 
 ## User stories
