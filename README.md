@@ -52,24 +52,24 @@ This project includes only a backend. To test it, please use Postman.
 - copy the content in the file, paste and click Import
 
 **The steps in the collection**</br>
-1. POST A parent is created</br>
-2. GET Verify if the parent has been added</br>
-3. POST Adds a child to the parent</br>
-4. GET Verify if the child's balance has been created</br>
-5. POST Add a second child to the parent</br>
-6. (3x) POST Add three different chores to the database</br>
-9. GET Retrieve all chores from the Chores database</br>
-10. POST Assign the first chore to the first child</br>
-11. POST Assign the second chore to the first child</br>
-12. POST Assign the third chore to the first child</br>
-13. POST Create a saving goal for the first child</br>
-14. GET Retrieve the saving goal for the first child</br>
-15. PUT Update the date of the first chore for the first child</br>
-16. PUT Update the value of the first chore for the first child</br>
-17. PUT Update the status of the first chore for the first child</br>
-18. DEL Remove the second chore for the first child</br>
-19. GET Retrieve a list of today's chores for the first child</br>
-20. PUT Adjust the balance for the first child
+1. POST /parent: A parent is created</br>
+2. GET /parent/{parentUuid}: Get the parent. Can see a list of the parents children. When the parent is creates, the list is empty</br>
+3. POST /child: Add a child to the parent</br>
+4. GET /child/balance/{childUuid}: Get a child's balance</br>
+5. POST /child: Add a second child to the parent</br>
+6. (3x) POST /chore: Add three different chores to the database</br>
+9. GET /chore/allchores: Retrieve all chores from the Chores database</br>
+10. POST /childchore/addchore: Assign the first chore to the first child</br>
+11. POST /childchore/addchore: Assign the second chore to the first child</br>
+12. POST /childchore/addchore: Assign the third chore to the first child</br>
+13. POST /child/goal: Create a saving goal for the first child</br>
+14. GET /child/goal/{childUuid}: Get the saving goal for the first child</br>
+15. PUT /childchore/update/date: Update the date of the first chore for the first child</br>
+16. PUT /childchore/update/value: Update the value of the first chore for the first child</br>
+17. PUT /childchore/update/status: Update the status of the first chore for the first child</br>
+18. DEL /childchore/remove: Remove the second chore for the first child</br>
+19. GET /childchore/{childUuid}: Retrieve a list of today's chores for the first child</br>
+20. PUT /child/balance/update: A user adjusts the balance for the first child
 
 
 ### The services
@@ -87,30 +87,24 @@ it to adapt to changes in real time and maintain seamless communication between 
 This service exports configurations to Consul, then terminates.
 
 - ### user
-The service is responsible for managing the user profiles.</br>
-The service has its own database with the tables
-- parent
-- child
+The service is responsible for managing the user profiles. This service calls 
+Reward service when a child's balance and saving goal are created, when a child's balance is updated by its parent 
+and when the child want to get its current balance and saving goal. The service has its own database with the tables parent and child.
 
 - ### reward
 This service is responsible for creating, storing, and updating a child's balance and saving goal. The Rewards 
 component listens to RabbitMQ for messages containing a child's list of completed chores for the day and subsequently 
-updates the balance and saving goal.</br>
-The service has its own database with the tables
-- balance
-- saving_goal
+updates the balance and saving goal. The service has its own database with the tables balance and saving_goal.
 
 - ### chores
-The service is responsible for creating, storing, and retrieving chores from the database.</br> 
-The service has its own database with the table chore
+The service is responsible for creating, storing, and retrieving chores from the database. The service has its own database with the table chore.
 
 - ### childChore
 The service is responsible for managing the child’s chores and to check the 
 status of the child’s chores of the day. If all the chores of the day are completed, the 
 ChildChore service sends a message to RabbitMQ containing the child’s chores of the 
 day. When a chore is added to a child, a call is made to the Chores service to validate whether the chore 
-exists in the database.</br>
-The service has its own database with the table child_chore
+exists in the database. The service has its own database with the table child_chore.
 
 ## User stories
 ### MVP
