@@ -84,7 +84,7 @@ it to adapt to changes in real time and maintain seamless communication between 
 
 
 - ### consul-importer
-This service exports configurations to Consul, then terminates.
+This service exports configurations to Consul, then terminates. It now configures the name of the service instances for each service.
 
 - ### user
 The service is responsible for managing the user profiles. This service calls 
@@ -118,9 +118,7 @@ balance and the progress towards my saving goal
 ### Prototype
 - As a parent user, I want to select a chore from a predefined list and customize it with a 
 specific date and value, so that I can add it to my child's list of chores.
-- As a parent user, I want to create a new chore, so that I can add it to my child later 
-- As a child user, I get a positive feedback when I completed all the chores of that day, so 
-that I know I’m done with that day’s chores
+- As a parent user, I want to create a new chore, so that I can add it to my child later
 - As a parent user, I can create several child profiles, so that I can manage several children
 - As a parent user, I can remove chores from my child profiles, so that I can adjust the list 
 to changes happening that day
