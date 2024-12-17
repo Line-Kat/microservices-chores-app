@@ -33,24 +33,32 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 
 
 ### Start
+To run this app, you need to have Docker Compose installed
 Navigate to `./docker` and run the command `docker-compose up`
 
 ### Run
 This project includes only a backend. To test it, please use Postman.
 
+## Postman
 #### Import Collection
 1. Open Postman and go to the Collections tab
 2. Click on the Import button
-3. 
-- Add this [collection](./chores.postman_collection.json)-file and click Import OR 
-- copy the content in the file, paste and click Import
+3. - Add this [collection](./chores.postman_collection.json)-file and click Import</br> 
+OR 
+   - copy the content in the file, paste it and click Import
 
 #### Import Environment
 1. Click on the Environment tab
 2. Click on the Import button
-3.
-- Add this [environment](./environment.postman_environment.json)-file and click import OR 
-- copy the content in the file, paste and click Import
+3. - Add this [environment](./environment.postman_environment.json)-file and click import </br>
+OR 
+   - copy the content in the file, paste it and click 
+4. Set "Current value" to today's date (replace {dd} with today's date) "2024-12-{dd}T19:26:38.518+01:00" 
+save and overwrite
+5. Select this environment to run the collection in
+
+#### Run the collection in Postman
+1. 
 
 **The steps in the collection**</br>
 1. POST /parent: A parent is created</br>
