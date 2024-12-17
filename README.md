@@ -15,8 +15,9 @@ spends real money, parents can manually adjust the child's balance to reflect th
 
 ## Instructions on how to build, start and run the application
 ### Build
-First package the services using Maven </br>
+First, package the services using Maven </br>
 Run `mvn clean package -DskipTests` in the root folder of the project </br>
+This app uses Java version 20. </br>
 I have used 'docker build' to build the images for every service </br></br>
 To build all the images run `./build_docker.sh` in the root folder of the project </br></br>
 **A table with tags for the different services** </br>
