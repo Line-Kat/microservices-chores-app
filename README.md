@@ -33,7 +33,7 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 
 
 ### Start
-`docker-compose up`
+Navigate to `./docker` and run the command `docker-compose up`
 
 ### Run
 This project includes only a backend. To test it, please use Postman.
