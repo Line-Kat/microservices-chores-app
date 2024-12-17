@@ -33,8 +33,9 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 
 
 ### Start
-To run this app, you need to have Docker Compose installed
-Navigate to `./docker` and run the command `docker-compose up`
+To run this app, you need to have Docker Compose installed </br>
+Navigate to `./docker` and run the command `docker-compose up`</br>
+To check the status of the services, go to Consul in your browser: http://localhost:8500/
 
 ### Run
 This project includes only a backend. To test it, please use Postman.
