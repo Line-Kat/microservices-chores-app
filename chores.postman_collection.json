@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a3ef7967-bbdc-4e6e-b0e6-9f78625ec35e",
+		"_postman_id": "965f4ab1-d4ff-4965-9bea-e6f8e188ea2a",
 		"name": "chores",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40140973"
@@ -293,6 +293,16 @@
 			"event": [
 				{
 					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
 					"script": {
 						"exec": [
 							"var moment = require('moment');\r",
