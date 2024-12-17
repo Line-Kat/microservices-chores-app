@@ -34,7 +34,7 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 
 ### Start
 To run this app, you need to have Docker Compose installed </br>
-Navigate to `./docker` and run the command `docker-compose up`</br>
+Navigate to `./docker` and run the command `docker compose up` or `docker-compose up`</br>
 To check the status of the services, go to Consul in your browser: http://localhost:8500/
 
 ### Run
@@ -54,12 +54,8 @@ OR
 3. - Add this [environment](./environment.postman_environment.json)-file and click import </br>
 OR 
    - copy the content in the file, paste it and click 
-4. Set "Current value" to today's date (replace {dd} with today's date) "2024-12-{dd}T19:26:38.518+01:00" 
-save and overwrite
-5. Select this environment to run the collection in
-
-#### Run the collection in Postman
-1. 
+4. Select this environment to run the collection in
+5. Verify that current value to the variable "CurrentDate" is today's date after the collection is run
 
 **The steps in the collection**</br>
 1. POST /parent: A parent is created</br>
