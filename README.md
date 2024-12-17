@@ -15,8 +15,9 @@ spends real money, parents can manually adjust the child's balance to reflect th
 
 ## Instructions on how to build, start and run the application
 ### Build
-First package the services using Maven </br>
+First, package the services using Maven </br>
 Run `mvn clean package -DskipTests` in the root folder of the project </br>
+This app uses Java version 20. </br>
 I have used 'docker build' to build the images for every service </br></br>
 To build all the images run `./build_docker.sh` in the root folder of the project </br></br>
 **A table with tags for the different services** </br>
@@ -32,24 +33,33 @@ To build all the images run `./build_docker.sh` in the root folder of the projec
 
 
 ### Start
-`docker-compose up`
+To run this app, you need to have Docker Compose installed </br>
+Navigate to `./docker` and run the command `docker-compose up`</br>
+To check the status of the services, go to Consul in your browser: http://localhost:8500/
 
 ### Run
 This project includes only a backend. To test it, please use Postman.
 
+## Postman
 #### Import Collection
 1. Open Postman and go to the Collections tab
 2. Click on the Import button
-3. 
-- Add this [collection](./chores.postman_collection.json)-file and click Import OR 
-- copy the content in the file, paste and click Import
+3. - Add this [collection](./chores.postman_collection.json)-file and click Import</br> 
+OR 
+   - copy the content in the file, paste it and click Import
 
 #### Import Environment
 1. Click on the Environment tab
 2. Click on the Import button
-3.
-- Add this [environment](./environment.postman_environment.json)-file and click import OR 
-- copy the content in the file, paste and click Import
+3. - Add this [environment](./environment.postman_environment.json)-file and click import </br>
+OR 
+   - copy the content in the file, paste it and click 
+4. Set "Current value" to today's date (replace {dd} with today's date) "2024-12-{dd}T19:26:38.518+01:00" 
+save and overwrite
+5. Select this environment to run the collection in
+
+#### Run the collection in Postman
+1. 
 
 **The steps in the collection**</br>
 1. POST /parent: A parent is created</br>
